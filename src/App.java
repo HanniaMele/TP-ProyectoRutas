@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,24 +28,28 @@ public class App {
 
         m = P_RUTA.matcher(linea);
         if (m.matches()) {
+            System.out.println("Se detecto Ruta");
            // procesarRuta(m);
             return;
         }
 
         m = P_CIUDAD.matcher(linea);
         if (m.matches()) {
+            System.out.println("Se detecto ciudad");
             //procesarCiudad(m);
             return;
         }
 
         m = P_AEROLINEA.matcher(linea);
         if (m.matches()) {
+            System.out.println("Se detecto aerolinea");
             //procesarAerolinea(m);
             return;
         }
 
         m = P_CONSULTA.matcher(linea);
         if (m.matches()) {
+            System.out.println("Se detecto consulta");
             //procesarConsulta(m);
             return;
         }
@@ -99,7 +104,9 @@ public class App {
 
 
     public static void main(String[] args) {
-         Scanner sc = new Scanner(System.in);
+        
+        //Codigo para el escaneo del archivo con lineas
+        /*Scanner sc = new Scanner(System.in);
         System.out.print("Archivo de entrada: ");
         String nombreArchivo = sc.nextLine();
 
@@ -112,7 +119,94 @@ public class App {
 
         } catch (IOException e) {
             System.out.println("Error al leer el archivo de entrada.");
-        }
+        }*/
+
+        Grafo grafo = new Grafo();
+
+        /*
+        //Problema de PowerPoint
+        // Crear ciudades
+        Ciudad A = new Ciudad("A","A","A","A","A");
+        Ciudad B = new Ciudad("B","B","B","B","B");
+        Ciudad C = new Ciudad("C","C","C","C","C");
+        Ciudad D = new Ciudad("D","D","D","D","D");
+        Ciudad E = new Ciudad("E","E","E","E","E");
+        Ciudad F = new Ciudad("F","F","F","F","F");
+        Ciudad G = new Ciudad("G","G","G","G","G");
+        Ciudad H = new Ciudad("H","H","H","H","H");
+        Ciudad I = new Ciudad("I","I","I","I","I");
+
+        // Agregar rutas
+        A.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","B",3.0,0.0,0.0,"FRECUENCIA"));
+        A.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","C",5.0,0.0,0.0,"FRECUENCIA"));
+        A.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","D",4.0,0.0,0.0,"FRECUENCIA"));
+        B.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","E",2.0,0.0,0.0,"FRECUENCIA"));
+        C.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","E",1.0,0.0,0.0,"FRECUENCIA"));
+        C.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","F",2.0,0.0,0.0,"FRECUENCIA"));
+        D.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","F",1.0,0.0,0.0,"FRECUENCIA"));
+        E.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","F",3.0,0.0,0.0,"FRECUENCIA"));
+        E.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","G",2.0,0.0,0.0,"FRECUENCIA"));
+        F.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","G",7.0,0.0,0.0,"FRECUENCIA"));
+        F.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","H",5.0,0.0,0.0,"FRECUENCIA"));
+        G.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","I",1.0,0.0,0.0,"FRECUENCIA"));
+        H.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","I",2.0,0.0,0.0,"FRECUENCIA"));
+
+        // Agregar ciudades al grafo
+        grafo.agregarCiudad(A);
+        grafo.agregarCiudad(B);
+        grafo.agregarCiudad(C);
+        grafo.agregarCiudad(D);
+        grafo.agregarCiudad(E);
+        grafo.agregarCiudad(F);
+        grafo.agregarCiudad(G);
+        grafo.agregarCiudad(H);
+        grafo.agregarCiudad(I);
+        */
+
+        //Problema de PowerPoint con modificacion donde de G a I vale 100 
+        // Crear ciudades
+        Ciudad A = new Ciudad("A","A","A","A","A");
+        Ciudad B = new Ciudad("B","B","B","B","B");
+        Ciudad C = new Ciudad("C","C","C","C","C");
+        Ciudad D = new Ciudad("D","D","D","D","D");
+        Ciudad E = new Ciudad("E","E","E","E","E");
+        Ciudad F = new Ciudad("F","F","F","F","F");
+        Ciudad G = new Ciudad("G","G","G","G","G");
+        Ciudad H = new Ciudad("H","H","H","H","H");
+        Ciudad I = new Ciudad("I","I","I","I","I");
+
+        // Agregar rutas
+        A.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","B",3.0,0.0,0.0,"FRECUENCIA"));
+        A.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","C",5.0,0.0,0.0,"FRECUENCIA"));
+        A.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","D",4.0,0.0,0.0,"FRECUENCIA"));
+        B.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","E",2.0,0.0,0.0,"FRECUENCIA"));
+        C.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","E",1.0,0.0,0.0,"FRECUENCIA"));
+        C.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","F",2.0,0.0,0.0,"FRECUENCIA"));
+        D.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","F",1.0,0.0,0.0,"FRECUENCIA"));
+        E.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","F",3.0,0.0,0.0,"FRECUENCIA"));
+        E.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","G",2.0,0.0,0.0,"FRECUENCIA"));
+        F.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","G",7.0,0.0,0.0,"FRECUENCIA"));
+        F.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","H",5.0,0.0,0.0,"FRECUENCIA"));
+        G.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","I",100.0,0.0,0.0,"FRECUENCIA"));
+        H.agregarRuta(new Ruta("AEROLINEA",1,"CIUDADORIGEN","I",2.0,0.0,0.0,"FRECUENCIA"));
+
+        // Agregar ciudades al grafo
+        grafo.agregarCiudad(A);
+        grafo.agregarCiudad(B);
+        grafo.agregarCiudad(C);
+        grafo.agregarCiudad(D);
+        grafo.agregarCiudad(E);
+        grafo.agregarCiudad(F);
+        grafo.agregarCiudad(G);
+        grafo.agregarCiudad(H);
+        grafo.agregarCiudad(I);
+
+        // Ejecutar algoritmo
+        AlgoritmoBusquedaCamino algoritmo = new AlgoritmoBusquedaCamino();
+        List<String> camino = algoritmo.caminoMasCorto(grafo, "A", "I");
+
+        // Mostrar resultado
+        System.out.println("Camino más corto: " + camino);
     }
 
 
