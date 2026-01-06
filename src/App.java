@@ -210,15 +210,15 @@ public class App {
         ControladorGrafo controladorGrafo = new ControladorGrafo();
 
         // Agregar ciudades al grafo
-        controladorGrafo.agregarCiudad("A","A","A","A","A");
-        controladorGrafo.agregarCiudad("B","B","B","B","B");
-        controladorGrafo.agregarCiudad("C","C","C","C","C");
-        controladorGrafo.agregarCiudad("D","D","D","D","D");
-        controladorGrafo.agregarCiudad("E","E","E","E","E");
-        controladorGrafo.agregarCiudad("F","F","F","F","F");
-        controladorGrafo.agregarCiudad("G","G","G","G","G");
-        controladorGrafo.agregarCiudad("H","H","H","H","H");
-        controladorGrafo.agregarCiudad("I","I","I","I","I");
+        controladorGrafo.agregarCiudad("A","Ciudad A","A","A","A");
+        controladorGrafo.agregarCiudad("B","Ciudad B","B","B","B");
+        controladorGrafo.agregarCiudad("C","Ciudad C","C","C","C");
+        controladorGrafo.agregarCiudad("D","Ciudad D","D","D","D");
+        controladorGrafo.agregarCiudad("E","Ciudad E","E","E","E");
+        controladorGrafo.agregarCiudad("F","Ciudad F","F","F","F");
+        controladorGrafo.agregarCiudad("G","Ciudad G","G","G","G");
+        controladorGrafo.agregarCiudad("H","Ciudad H","H","H","H");
+        controladorGrafo.agregarCiudad("I","Ciudad I","I","I","I");
 
         // Agregar rutas
         controladorGrafo.agregarRuta("AEROLINEA",1,"A","B",3.0,0.0,0.0,"FRECUENCIA");
@@ -236,9 +236,9 @@ public class App {
         controladorGrafo.agregarRuta("AEROLINEA",1,"G","I",1.0,0.0,0.0,"FRECUENCIA");
         controladorGrafo.agregarRuta("AEROLINEA",1,"H","I",2.0,0.0,0.0,"FRECUENCIA");
 
-        List <String> caminoDijkstra = controladorGrafo.caminoMasCorto("A", "I");
+        List <String> caminoDijkstra = controladorGrafo.viajeMenorPrecio("A", "I");
 
-        List <Viaje> caminoTop5 = controladorGrafo.primerosCincoCaminos("A", "I");
+        List <Viaje> caminoTop5 = controladorGrafo.top5ViajesBaratos("A", "I");
 
         // Mostrar resultado
         System.out.println("Camino más corto Dijkstra");

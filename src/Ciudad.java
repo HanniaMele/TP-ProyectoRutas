@@ -32,5 +32,9 @@ public class Ciudad {
     public List<Ruta> getRutas(){
         return rutas;
     }
+
+    public String toString(){
+        return nombreCiudad;
+    }
     
 }

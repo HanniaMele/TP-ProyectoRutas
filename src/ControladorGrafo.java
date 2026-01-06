@@ -37,27 +37,30 @@ public class ControladorGrafo {
         return resultado;
     }
 
-    public List<String> caminoMasCorto(String claveCiudadOrigen, String claveCiudadDestino){
+    public List<String> viajeMenorPrecio(String claveCiudadOrigen, String claveCiudadDestino){
 
         List<String> camino = null;
 
         if(grafo.buscarCiudad(claveCiudadOrigen) != null && grafo.buscarCiudad(claveCiudadDestino) != null){
 
             AlgoritmoBusquedaCamino algoritmo = new AlgoritmoBusquedaCamino();
-            camino = algoritmo.caminoMasCorto(grafo, claveCiudadOrigen, claveCiudadDestino);
+            camino = algoritmo.viajeMenorPrecio(grafo, claveCiudadOrigen, claveCiudadDestino);
         }
 
         return camino;
     }
 
-    public List<Viaje> primerosCincoCaminos(String claveCiudadOrigen, String claveCiudadDestino){
+    public List<Viaje> top5ViajesBaratos(String claveCiudadOrigen, String claveCiudadDestino){
 
         List<Viaje> viajes = null;
 
         if(grafo.buscarCiudad(claveCiudadOrigen) != null && grafo.buscarCiudad(claveCiudadDestino) != null){
 
+            Ciudad ciudadOrigen = grafo.buscarCiudad(claveCiudadOrigen);
+            Ciudad ciudadDestino = grafo.buscarCiudad(claveCiudadDestino);
+
             AlgoritmoBusquedaCamino algoritmo = new AlgoritmoBusquedaCamino();
-            viajes = algoritmo.primerosCincoCaminos(grafo, claveCiudadOrigen, claveCiudadDestino);
+            viajes = algoritmo.top5ViajesBaratos(grafo, ciudadOrigen, ciudadDestino);
         }
 
         return viajes;

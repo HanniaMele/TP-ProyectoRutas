@@ -9,59 +9,99 @@ import java.util.Set;
 
 public class AlgoritmoBusquedaCamino {
 
-    public List<String> caminoMasCorto(Grafo grafo, String origen, String destino) {
-        // Inicialización
-        Map<String, Double> costos = new HashMap<>();
-        Map<String, String> anteriores = new HashMap<>();
-        Set<String> visitados = new HashSet<>();
+    //Metodo que obtiene el viaje con menor precio
+    public List<String> viajeMenorPrecio(Grafo grafo, String origen, String destino) {
+        
+        // Map para guardar las ciudades del grafo con su costo mas barato
+        Map<String, Double> menorCostoPorCiudad = new HashMap<>();
 
+        //Map para guardar la ciudad anterior mas conveniente de cada ciudad
+        Map<String, String> anteriorMasBarato = new HashMap<>();
+
+        //Set para guardar las ciudades que se marcan como visitadas
+        Set<String> ciudadesVisitadas = new HashSet<>();
+
+        //Todas las ciudades del grafo se añaden al map menorCostoPorCiudad con un costo de infinito
         for (Ciudad ciudad : grafo.getCiudades()) {
-            costos.put(ciudad.getClave(), Double.POSITIVE_INFINITY);
+            menorCostoPorCiudad.put(ciudad.getClave(), Double.POSITIVE_INFINITY);
         }
 
-        costos.put(origen, 0.0);
+        //Se establece al origen un costo de 0 en el map menorCostoPorCiudad
+        menorCostoPorCiudad.put(origen, 0.0);
 
+        //Se establce a actual como origen
         String actual = origen;
 
+        //Ciclo para revisar todas las rutas de las ciudades y obtener asi la relacion del map anteriores
         while (actual != null) {
-            // Paso 2: Actualizar distancias a adyacentes
+
+            //Se obtiene la Ciudad correspondiente a actual
             Ciudad ciudadActual = grafo.buscarCiudad(actual);
+
+            //Ciclo para todas la rutas de ciudadActual
             for (Ruta ruta : ciudadActual.getRutas()) {
-                if (!visitados.contains(ruta.getclaveCiudadDestino())) {
-                    double nuevoCosto = costos.get(actual) + ruta.getCosto();
-                    if (nuevoCosto < costos.get(ruta.getclaveCiudadDestino())) {
-                        costos.put(ruta.getclaveCiudadDestino(), nuevoCosto);
-                        anteriores.put(ruta.getclaveCiudadDestino(), actual);
+
+                //Si la ciudad destino de la ruta no esta marcada como visitada
+                if (!ciudadesVisitadas.contains(ruta.getclaveCiudadDestino())) {
+
+                    //Se calcula el nuevo costo al sumar el costo de esta ruta con el acumulado actual
+                    double nuevoCosto = menorCostoPorCiudad.get(actual) + ruta.getCosto();
+
+                    //Si el nuevo costo es menor que un posible costo registrado anteiormente para llegar a la ciudad destino de esta ruta en el map menorCostoPorCiudad, entonces se reemplaza el costo anterior por este
+                    if (nuevoCosto < menorCostoPorCiudad.get(ruta.getclaveCiudadDestino())) {
+
+                        //Se reemplaza el costo anterior por uno mas barato
+                        menorCostoPorCiudad.put(ruta.getclaveCiudadDestino(), nuevoCosto);
+
+                        //La actualizacion del costo implica que entonces tambien debe actualizarse desde que ciudad es mas barato llegar a este destino
+                        anteriorMasBarato.put(ruta.getclaveCiudadDestino(), actual);
                     }
                 }
             }
 
-            // Paso 3: Marcar como visitado
-            visitados.add(actual);
+            //Despues de recorrer todas las rutas se marca la ciudad como visitada
+            ciudadesVisitadas.add(actual);
 
-            // Paso 4: Seleccionar el nodo con menor distancia no visitado
+            //Se establece actual en null, para terminar con el ciclo en caso de que ya no queden ciudades por visitar
             actual = null;
+
+            //Se establece menorDistancia como infinito para posteriormente buscar un costo menor
             double menorDistancia = Double.POSITIVE_INFINITY;
-            for (String nodo : costos.keySet()) {
-                if (!visitados.contains(nodo) && costos.get(nodo) < menorDistancia) {
-                    menorDistancia = costos.get(nodo);
-                    actual = nodo;
+
+            //Se recorre los keys del map menorCostoPorCiudad
+            for (String ciudad : menorCostoPorCiudad.keySet()) {
+
+                //Si aun hay ciudades sin visitar y que es posible llegar a ellas, se obtiene la de menor costo acumulado
+                if (!ciudadesVisitadas.contains(ciudad) && menorCostoPorCiudad.get(ciudad) < menorDistancia) {
+                    
+                    menorDistancia = menorCostoPorCiudad.get(ciudad);
+
+                    //La ciudad se guarda en actual para revisar sus rutas
+                    actual = ciudad;
                 }
             }
         }
 
-        // Reconstruir el camino
+        //Despues de terminar se reconstruye el camino mas barato comenzando en el destino para ir obteniendo las ciudades anteriores mas convenientes
         List<String> camino = new ArrayList<>();
-        String nodo = destino;
-        while (nodo != null) {
-            camino.add(0, nodo);
-            nodo = anteriores.get(nodo);
+        
+        //Se comienza con ciudad destino
+        String ciudad = destino;
+
+        while (ciudad != null) {
+
+            //Se agregan a la lista en el indice 0 y recorriendose para asi obtener el viaje ordenado
+            camino.add(0, ciudad);
+
+            //ciudad se llena ahora con la ciudad anterior mas conveniente hasta llegar a la ciudad origen
+            ciudad = anteriorMasBarato.get(ciudad);
         }
 
         return camino;
     }
 
-    public List<Viaje> primerosCincoCaminos (Grafo grafo, String origen, String destino) {
+    //Metodo que obtiene el top 5 de viajes menos costosos
+    public List<Viaje> top5ViajesBaratos (Grafo grafo, Ciudad origen, Ciudad destino) {
 
         //Cola de prioridad para explorar caminos, de manera que siempre esten ordenados por menor costo
         PriorityQueue<Viaje> cola = new PriorityQueue<>();
@@ -69,7 +109,7 @@ public class AlgoritmoBusquedaCamino {
         //Se agrega un nuevo objeto Viaje a la cola, este solo tiene un lugar (origen) en su lista de lugares y de costo 0.0
         cola.add(new Viaje(Arrays.asList(origen), 0.0));
 
-        //Lista de objetos Viajes correspondiente al resultado, que tendra los 5 viajes mas baratos
+        //Lista de objetos Viajes correspondiente al resultado, que tendra los 5 viajes menos costosos
         List<Viaje> resultado = new ArrayList<>();
 
         //Mientras cola no este vacia (es decir que existan Viajes incompletos para revisar posibles rutas) y aun no se obtengan los 5 Viajes menos costosos
@@ -78,11 +118,11 @@ public class AlgoritmoBusquedaCamino {
             //Saca de la cola el Viaje en la cabecera
             Viaje viajeActual = cola.poll();
 
-            //Obtiene la lista <String> correspondiente a las ciudades de ese Viaje en construccion
-            List<String> caminoActual = viajeActual.getCiudades();
+            //Obtiene la lista <Ciudad> correspondiente a las ciudades de ese Viaje en construccion
+            List<Ciudad> caminoActual = viajeActual.getCiudades();
 
             //Obtiene la ultima ciudad que se visita en ese Viaje
-            String ultimaCiudad = caminoActual.get(caminoActual.size() - 1);
+            Ciudad ultimaCiudad = caminoActual.get(caminoActual.size() - 1);
 
             //Si la ultima ciudad que se visita es el destino deseado, añadimos el Viaje al resultado y se continua con el ciclo
             if (ultimaCiudad.equals(destino)) {
@@ -90,22 +130,22 @@ public class AlgoritmoBusquedaCamino {
                 continue;
             }
 
-            //Se obtiene el objeto Ciudad de la ultima ciudad que se visita para revisar sus rutas
-            Ciudad ciudadActual = grafo.buscarCiudad(ultimaCiudad);
-
-            //Por cada ruta se crea un nuevo Viaje con su correspondiente costo. En caso de no haber ruta entonces ese Viaje no puede llevar al destino y no genera nuevos potenciales Viajes
-            for (Ruta ruta : ciudadActual.getRutas()) {
+            //Por cada ruta en ultimaCiudad se crea un nuevo Viaje con su correspondiente costo. En caso de no haber ruta entonces ese Viaje no puede llevar al destino y no genera nuevos potenciales Viajes
+            for (Ruta ruta : ultimaCiudad.getRutas()) {
 
                 //Se obtiene el destino de la ruta
-                String siguienteCiudad = ruta.getclaveCiudadDestino();
+                String claveSiguienteCiudad = ruta.getclaveCiudadDestino();
 
-                //Para evitar que el algoritmo se atrape en un ciclo se considera que la ciudad destino no este actualmente en el camino del Viaje
+                //Se obtiene el objeto Ciudad del destino de la ruta
+                Ciudad siguienteCiudad = grafo.buscarCiudad(claveSiguienteCiudad);
+
+                //Para evitar que el algoritmo se atrape en un ciclo se considera que la ciudad destino de la ruta no este actualmente en el camino actual
                 if (!caminoActual.contains(siguienteCiudad)) {
 
                     //Se crea nueva lista que corresponde al camino que se seguira en el nuevo objeto Viaje
-                    List<String> nuevoCamino = new ArrayList<>(caminoActual);
+                    List<Ciudad> nuevoCamino = new ArrayList<>(caminoActual);
 
-                    //Se le agrega el destino de la ruta al nuevo camino
+                    //Se le agrega la ciudad destino de la ruta al nuevo camino
                     nuevoCamino.add(siguienteCiudad);
 
                     //Se calcula el costo correspondiente a este nuevo potencial Viaje

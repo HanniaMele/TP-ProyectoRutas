@@ -2,15 +2,16 @@ import java.util.List;
 
 public class Viaje implements Comparable<Viaje>{
 
-    private List<String> ciudades;
+    //Atributos
+    private List<Ciudad> ciudades;
     private double costoTotal;
 
-    public Viaje(List<String> ciudades, double costoTotal) {
+    public Viaje(List<Ciudad> ciudades, double costoTotal) {
         this.ciudades = ciudades;
         this.costoTotal = costoTotal;
     }
 
-    public List<String> getCiudades() {
+    public List<Ciudad> getCiudades() {
         return ciudades;
     }
 
@@ -18,6 +19,7 @@ public class Viaje implements Comparable<Viaje>{
         return costoTotal;
     }
 
+    //Implementacion requerida para poder usar PriorityQueue en el algoritmo de busqueda para el top 5
     @Override
     public int compareTo(Viaje otro) {
         return Double.compare(this.costoTotal, otro.costoTotal);
