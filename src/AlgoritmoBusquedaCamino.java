@@ -22,8 +22,15 @@ public class AlgoritmoBusquedaCamino {
         Set<String> ciudadesVisitadas = new HashSet<>();
 
         //Todas las ciudades del grafo se añaden al map menorCostoPorCiudad con un costo de infinito
+        /*
         for (Ciudad ciudad : grafo.getCiudades()) {
             menorCostoPorCiudad.put(ciudad.getClave(), Double.POSITIVE_INFINITY);
+        }
+        */
+       ///// Se recorre el keySet del map de ciudades del grafo para inicializar el map menorCostoPorCiudad
+       /// SE HACE ASÍ PORQUE ES UN MAP Y NO UNA LISTA
+        for (String claveCiudad : grafo.getCiudades().keySet()) {
+            menorCostoPorCiudad.put(claveCiudad, Double.POSITIVE_INFINITY);
         }
 
         //Se establece al origen un costo de 0 en el map menorCostoPorCiudad

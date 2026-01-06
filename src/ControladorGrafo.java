@@ -1,4 +1,5 @@
 import java.util.List;
+import java.time.LocalTime;
 
 public class ControladorGrafo {
 
@@ -22,7 +23,7 @@ public class ControladorGrafo {
         return resultado;
     }
 
-    public boolean agregarRuta(String claveAerolinea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, double horaSalida, double horaLlegada, String frecuencia){
+    public boolean agregarRuta(String claveAerolinea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, LocalTime horaSalida, LocalTime horaLlegada, String frecuencia){
 
         boolean resultado = false;
 

@@ -1,3 +1,14 @@
+/*
+ * Titulo: Ruta
+ * Descripcion: Clase que representa una ruta con su clave, número de ruta, ciudades de origen y destino, costo, hora de salida y llegada, y frecuencia semanal.
+ * @autor: Jared Eliezer Baldenegro Gomez; Jimer Orlando Diaz Murillo y Hannia
+ * Materia: tecnologias de programacion
+ * Profesor: Dra. María Lucia Barrón Estrada
+ * Fecha: 07-01-2026
+ * 
+ * 
+ */
+import java.time.LocalTime;
 public class Ruta {
 
     private String claveAerolinea;
@@ -5,11 +16,11 @@ public class Ruta {
     private String claveCiudadOrigen;
     private String claveCiudadDestino;
     private double costo;
-    private double horaSalida;
-    private double horaLlegada;
+    private LocalTime horaSalida;
+    private LocalTime horaLlegada;
     private String frecuencia;
 
-    public Ruta(String claveAerolinea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, double horaSalida, double horaLlegada, String frecuencia) {
+    public Ruta(String claveAerolinea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, LocalTime horaSalida, LocalTime horaLlegada, String frecuencia) {
         this.claveAerolinea = claveAerolinea;
         this.numeroRuta = numeroRuta;
         this.claveCiudadOrigen = claveCiudadOrigen;

@@ -1,107 +1,46 @@
+/*
+ * Titulo: Rutas 
+ * Descripcion: Programa que lee un archivo con ciudades, aerolineas, rutas y consultas. Almacena los
+ * datos en un repositorio y muestra las primeras 5 caminos disponibles.
+ * @autor: Jared Eliezer Baldenegro Gomez; Jimer Orlando Diaz Murillo y Hannia
+ * Materia: tecnologias de programacion
+ * Profesor: Dra. María Lucia Barrón Estrada
+ * Fecha: 07-01-2026
+ * 
+ * MODIFICACIONES: Eh agregado SALIDA_DEBUG y LLEGADA_DEBUG para pruebas de las horas de salida y llegada en las rutas.
+ * Si se desea usar horas reales, cambiar las llamadas a agregarRuta en main para usar Local
+ */
+
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/// Metodo para verificar si un archivo existe
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class App {
 
-    static final Pattern P_AEROLINEA = Pattern.compile("^(-)?([A-Z]{2,3})\\s+([A-Za-z]{1,10})$");
+    /// DEBUG: Valores de hora de salida y llegada por defecto para pruebas
+    /// Si quiere utilizarse realmente debe usarse LocalTime.of(hora, minuto), ejemplo:
+    /// LocalTime.of(10, 0) // 10:00 AM
+    /// LocalTime.of(15, 30) // 3:30 PM
+    /// LocalTime.MIDNIGHT // 00:00 AM
+    /// 
+    private static final LocalTime SALIDA_DEBUG  = LocalTime.MIDNIGHT;
+    private static final LocalTime LLEGADA_DEBUG = LocalTime.MIDNIGHT;
 
-    static final Pattern P_CIUDAD = Pattern.compile("^([A-Z]{3})\\s+([^,]+),([^,]+),([^,]+),([^,]+)$");
-
-    static final Pattern P_RUTA = Pattern.compile("^([A-Z]{2,3})\\s+(\\d{4})\\s+([A-Z]{3})\\s+([A-Z]{3})\\s+" + "(\\d+(?:\\.\\d+)?)\\s+(\\d{2}:\\d{2})\\s+(\\d{2}:\\d{2})\\s+([1-7]+)$");
-
-    static final Pattern P_CONSULTA =Pattern.compile("^([A-Z]{3})\\s*->\\s*([A-Z]{3})\\s+(\\d{4}-\\d{2}-\\d{2})(?:\\s+(\\d{4}-\\d{2}-\\d{2}))?$");
-
-
-    private static void procesarLinea(String linea) {
-        linea = linea.replace("<-", "->");
-
-
-        linea = limpiarLinea(linea);
-        if (linea.isEmpty()) return;
-
-        Matcher m;
-
-        m = P_RUTA.matcher(linea);
-        if (m.matches()) {
-            System.out.println("Se detecto Ruta");
-           // procesarRuta(m);
-            return;
-        }
-
-        m = P_CIUDAD.matcher(linea);
-        if (m.matches()) {
-            System.out.println("Se detecto ciudad");
-            //procesarCiudad(m);
-            return;
-        }
-
-        m = P_AEROLINEA.matcher(linea);
-        if (m.matches()) {
-            System.out.println("Se detecto aerolinea");
-            //procesarAerolinea(m);
-            return;
-        }
-
-        m = P_CONSULTA.matcher(linea);
-        if (m.matches()) {
-            System.out.println("Se detecto consulta");
-            //procesarConsulta(m);
-            return;
-        }
-
-        System.out.println("Línea inválida: " + linea);
+    /// Metodo para comprobar si un archivo existe
+    public static boolean archivoExiste(String nombreArchivo) {
+        Path ruta = Path.of(nombreArchivo);
+        return Files.exists(ruta);
     }
-
-
-    // Prepara la linea leida para asegurarse de que es valida
-    // Elimina el espacio en blanco al inicio y al final
-    // Si la linea esta vacia o contiene solo un punto, devuelve null
-    private static String limpiarLinea(String linea) {
-
-        if (linea == null) return null;
-
-        // Elimina espacios en blanco al inicio y al final
-        linea = linea.trim();
-
-        // Almacenara donde se realizara el corte
-        int corte = -1;
-
-        // Si la linea esta vacia o contiene solo un punto, devuelve null
-        if (linea.isEmpty() || linea.equals(".")) {
-            return null;
-        }
-
-        // Elimina cualquier cosa despues de un punto
-        int punto = linea.lastIndexOf('.');
-
-        // Buscamos el ultimo signo de pregunta
-        int pregunta = linea.lastIndexOf('?');
-
-        if (punto != -1) {
-            // El punto manda: corta antes del punto
-            corte = punto;
-        } else if (pregunta != -1) {
-            // No hay punto, pero hay pregunta: corta DESPUES del ?
-            corte = pregunta + 1;
-        }
-
-        // Realiza el corte si es necesario
-        if (corte != -1) {
-            linea = linea.substring(0, corte);
-        }
-        
-        // Elimina espacios en blanco al inicio y al final nuevamente
-        linea = linea.trim();
-        // Devuelve la linea limpia o null si esta vacia
-        return linea.isEmpty() ? null : linea;
-    }
-
-
 
     public static void main(String[] args) {
         
@@ -110,16 +49,49 @@ public class App {
         System.out.print("Archivo de entrada: ");
         String nombreArchivo = sc.nextLine();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
+        */
+       String nombreArchivo;
+       // Variable que almacena el nombre del archivo a leer
+        //nombreArchivo = "TestCiudades.txt";
+        //nombreArchivo = "prueba 1.txt";
+        //nombreArchivo = "PRUEBA 2.txt";
 
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                procesarLinea(linea);
-            }
+        System.out.println("Ingrese el nombre del archivo de entrada (con extension .txt): ");
+        nombreArchivo = Keyboard.readString();
 
-        } catch (IOException e) {
-            System.out.println("Error al leer el archivo de entrada.");
-        }*/
+        if (!nombreArchivo.endsWith(".txt")) {
+            System.out.println("El archivo debe tener extension .txt");
+            return;
+        }
+
+        Path ruta = Path.of(nombreArchivo);
+
+        if (!archivoExiste(nombreArchivo)) {
+
+            System.out.println("El archivo no existe.");
+
+        } else {
+            System.out.println("El archivo existe.");
+
+             // Repositorio central de datos
+            Grafo repositorioDatos = new Grafo();
+            
+            // Lector de archivo
+            LectorArchivo lector = new LectorArchivo(repositorioDatos);
+            // Carga el archivo
+            lector.cargar(nombreArchivo);
+
+            // Muestra un resumen de los datos cargados
+            System.out.println("Ciudades cargadas: " + repositorioDatos.ciudades.size());
+            System.out.println("Aerolineas cargadas: " + repositorioDatos.aerolineas.size());
+            System.out.println("Rutas cargadas: " + repositorioDatos.rutas.size());
+            System.out.println("Consultas cargadas: " + repositorioDatos.consultas.size());
+            System.out.println();
+
+        }
+
+    
+        
        
         /*---------------------------------------------------------------------------------------
         //Problema de PowerPoint
@@ -207,6 +179,8 @@ public class App {
 
         //Problema de PowerPoint pero con controlador grafos--------------------------------------------------------
         // Crear ciudades
+
+        /*
         ControladorGrafo controladorGrafo = new ControladorGrafo();
 
         // Agregar ciudades al grafo
@@ -221,20 +195,20 @@ public class App {
         controladorGrafo.agregarCiudad("I","Ciudad I","I","I","I");
 
         // Agregar rutas
-        controladorGrafo.agregarRuta("AEROLINEA",1,"A","B",3.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"A","C",5.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"A","D",4.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"B","E",2.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"C","E",1.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"C","F",2.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"D","F",1.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"E","F",3.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"E","G",2.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"F","E",3.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"F","G",7.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"F","H",5.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"G","I",1.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"H","I",2.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"A","B",3.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"A","C",5.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"A","D",4.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"B","E",2.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"C","E",1.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"C","F",2.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"D","F",1.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"E","F",3.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"E","G",2.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"F","E",3.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"F","G",7.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"F","H",5.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"G","I",1.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"H","I",2.0,SALIDA_DEBUG,LLEGADA_DEBUG,"FRECUENCIA");
 
         List <String> caminoDijkstra = controladorGrafo.viajeMenorPrecio("A", "I");
 
@@ -249,5 +223,7 @@ public class App {
         for (Viaje viaje : caminoTop5) {
             System.out.println(viaje+"\n");
         }
+
+        */
     }
 }

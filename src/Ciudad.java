@@ -1,3 +1,14 @@
+/*
+ * Titulo: Ciudad
+ * Descripcion: Clase que representa una ciudad con su clave, nombre, estado, pais y continente.
+ * datos en un repositorio y muestra las primeras 5 caminos disponibles.
+ * @autor: Jared Eliezer Baldenegro Gomez; Jimer Orlando Diaz Murillo y Hannia
+ * Materia: tecnologias de programacion
+ * Profesor: Dra. María Lucia Barrón Estrada
+ * Fecha: 07-01-2026
+ * 
+ * 
+ */
 import java.util.ArrayList;
 import java.util.List;
 
