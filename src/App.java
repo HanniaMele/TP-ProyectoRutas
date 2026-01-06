@@ -120,10 +120,8 @@ public class App {
         } catch (IOException e) {
             System.out.println("Error al leer el archivo de entrada.");
         }*/
-
-        Grafo grafo = new Grafo();
-
-        /*
+       
+        /*---------------------------------------------------------------------------------------
         //Problema de PowerPoint
         // Crear ciudades
         Ciudad A = new Ciudad("A","A","A","A","A");
@@ -163,6 +161,7 @@ public class App {
         grafo.agregarCiudad(I);
         */
 
+        /*---------------------------------------------------------------------------------------------------
         //Problema de PowerPoint con modificacion donde de G a I vale 100 
         // Crear ciudades
         Ciudad A = new Ciudad("A","A","A","A","A");
@@ -204,10 +203,51 @@ public class App {
         // Ejecutar algoritmo
         AlgoritmoBusquedaCamino algoritmo = new AlgoritmoBusquedaCamino();
         List<String> camino = algoritmo.caminoMasCorto(grafo, "A", "I");
+        */
+
+        //Problema de PowerPoint pero con controlador grafos--------------------------------------------------------
+        // Crear ciudades
+        ControladorGrafo controladorGrafo = new ControladorGrafo();
+
+        // Agregar ciudades al grafo
+        controladorGrafo.agregarCiudad("A","A","A","A","A");
+        controladorGrafo.agregarCiudad("B","B","B","B","B");
+        controladorGrafo.agregarCiudad("C","C","C","C","C");
+        controladorGrafo.agregarCiudad("D","D","D","D","D");
+        controladorGrafo.agregarCiudad("E","E","E","E","E");
+        controladorGrafo.agregarCiudad("F","F","F","F","F");
+        controladorGrafo.agregarCiudad("G","G","G","G","G");
+        controladorGrafo.agregarCiudad("H","H","H","H","H");
+        controladorGrafo.agregarCiudad("I","I","I","I","I");
+
+        // Agregar rutas
+        controladorGrafo.agregarRuta("AEROLINEA",1,"A","B",3.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"A","C",5.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"A","D",4.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"B","E",2.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"C","E",1.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"C","F",2.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"D","F",1.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"E","F",3.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"E","G",2.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"F","E",3.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"F","G",7.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"F","H",5.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"G","I",1.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AEROLINEA",1,"H","I",2.0,0.0,0.0,"FRECUENCIA");
+
+        List <String> caminoDijkstra = controladorGrafo.caminoMasCorto("A", "I");
+
+        List <Viaje> caminoTop5 = controladorGrafo.primerosCincoCaminos("A", "I");
 
         // Mostrar resultado
-        System.out.println("Camino más corto: " + camino);
+        System.out.println("Camino más corto Dijkstra");
+        System.out.println(caminoDijkstra);
+
+        System.out.println("Top 5 caminos mas cortos");
+
+        for (Viaje viaje : caminoTop5) {
+            System.out.println(viaje+"\n");
+        }
     }
-
-
 }
