@@ -45,19 +45,17 @@ public class App {
     public static void main(String[] args) {
         
         //Codigo para el escaneo del archivo con lineas
-        /*Scanner sc = new Scanner(System.in);
-        System.out.print("Archivo de entrada: ");
-        String nombreArchivo = sc.nextLine();
 
-        */
        String nombreArchivo;
-       // Variable que almacena el nombre del archivo a leer
-        //nombreArchivo = "TestCiudades.txt";
-        //nombreArchivo = "prueba 1.txt";
-        //nombreArchivo = "PRUEBA 2.txt";
+       
 
         System.out.println("Ingrese el nombre del archivo de entrada (con extension .txt): ");
         nombreArchivo = Keyboard.readString();
+
+        // Variable que almacena el nombre del archivo a leer
+        //nombreArchivo = "TestCiudades.txt";
+        //nombreArchivo = "prueba 1.txt";
+        //nombreArchivo = "PRUEBA 2.txt";
 
         if (!nombreArchivo.endsWith(".txt")) {
             System.out.println("El archivo debe tener extension .txt");
