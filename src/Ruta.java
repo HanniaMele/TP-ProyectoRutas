@@ -1,6 +1,6 @@
 public class Ruta {
 
-    private String claveAerolinea;
+    private String claveLineaAerea;
     private int numeroRuta;
     private String claveCiudadOrigen;
     private String claveCiudadDestino;
@@ -9,8 +9,8 @@ public class Ruta {
     private double horaLlegada;
     private String frecuencia;
 
-    public Ruta(String claveAerolinea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, double horaSalida, double horaLlegada, String frecuencia) {
-        this.claveAerolinea = claveAerolinea;
+    public Ruta(String claveLineaAerea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, double horaSalida, double horaLlegada, String frecuencia) {
+        this.claveLineaAerea = claveLineaAerea;
         this.numeroRuta = numeroRuta;
         this.claveCiudadOrigen = claveCiudadOrigen;
         this.claveCiudadDestino = claveCiudadDestino;
@@ -18,6 +18,10 @@ public class Ruta {
         this.horaSalida = horaSalida;
         this.horaLlegada = horaLlegada;
         this.frecuencia = frecuencia;
+    }
+
+    public String getClaveLineaAerea() {
+        return claveLineaAerea;
     }
 
     public String getclaveCiudadDestino(){

@@ -2,10 +2,27 @@ import java.util.List;
 
 public class ControladorGrafo {
 
-    Grafo grafo;
+    public Grafo grafo;
 
     public ControladorGrafo(){
         grafo = new Grafo();
+    }
+
+    public boolean agregarLineaAerea(String clave, String nombreLineaAerea, boolean activo){
+
+        boolean resultado = false;
+
+        if(grafo.buscarLineaAereaNombre(nombreLineaAerea) == null){
+
+            LineaAerea nuevaLineaAerea = new LineaAerea(clave,nombreLineaAerea,activo);
+            grafo.agregarLineaAerea(nuevaLineaAerea);
+            resultado = true;
+        }else{
+            System.out.println("La Linea Aerea ya estaba en el catalogo de Lineas Aereas");
+        }
+
+        return resultado;
+
     }
 
     public boolean agregarCiudad(String clave, String nombreCiudad, String estado, String pais, String continente){
@@ -17,6 +34,8 @@ public class ControladorGrafo {
             Ciudad nuevaCiudad = new Ciudad(clave,nombreCiudad,estado,pais,continente);
             grafo.agregarCiudad(nuevaCiudad);
             resultado = true;
+        }else{
+            System.out.println("La ciudad ya estaba en el catalogo de ciudades");
         }
 
         return resultado;
@@ -26,7 +45,7 @@ public class ControladorGrafo {
 
         boolean resultado = false;
 
-        if(grafo.buscarCiudad(claveCiudadOrigen) != null && grafo.buscarCiudad(claveCiudadDestino) != null){
+        if(grafo.buscarCiudad(claveCiudadOrigen) != null && grafo.buscarCiudad(claveCiudadDestino) != null && grafo.buscarLineaAereaClave(claveAerolinea)!=null){
 
             Ciudad ciudadParaNuevaRuta = grafo.buscarCiudad(claveCiudadOrigen);
             Ruta nuevaRuta = new Ruta(claveAerolinea,numeroRuta,claveCiudadOrigen,claveCiudadDestino,costo,horaSalida,horaLlegada,frecuencia);

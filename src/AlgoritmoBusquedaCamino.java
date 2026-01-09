@@ -132,28 +132,34 @@ public class AlgoritmoBusquedaCamino {
 
             //Por cada ruta en ultimaCiudad se crea un nuevo Viaje con su correspondiente costo. En caso de no haber ruta entonces ese Viaje no puede llevar al destino y no genera nuevos potenciales Viajes
             for (Ruta ruta : ultimaCiudad.getRutas()) {
+                
+                //Si esa linea no esta activa no se considera
+                if(!grafo.buscarLineaAereaInactiva(ruta.getClaveLineaAerea())){
 
-                //Se obtiene el destino de la ruta
-                String claveSiguienteCiudad = ruta.getclaveCiudadDestino();
+                    //Se obtiene el destino de la ruta
+                    String claveSiguienteCiudad = ruta.getclaveCiudadDestino();
 
-                //Se obtiene el objeto Ciudad del destino de la ruta
-                Ciudad siguienteCiudad = grafo.buscarCiudad(claveSiguienteCiudad);
+                    //Se obtiene el objeto Ciudad del destino de la ruta
+                    Ciudad siguienteCiudad = grafo.buscarCiudad(claveSiguienteCiudad);
 
-                //Para evitar que el algoritmo se atrape en un ciclo se considera que la ciudad destino de la ruta no este actualmente en el camino actual
-                if (!caminoActual.contains(siguienteCiudad)) {
+                    //Para evitar que el algoritmo se atrape en un ciclo se considera que la ciudad destino de la ruta no este actualmente en el camino actual
+                    if (!caminoActual.contains(siguienteCiudad)) {
 
-                    //Se crea nueva lista que corresponde al camino que se seguira en el nuevo objeto Viaje
-                    List<Ciudad> nuevoCamino = new ArrayList<>(caminoActual);
+                        //Se crea nueva lista que corresponde al camino que se seguira en el nuevo objeto Viaje
+                        List<Ciudad> nuevoCamino = new ArrayList<>(caminoActual);
 
-                    //Se le agrega la ciudad destino de la ruta al nuevo camino
-                    nuevoCamino.add(siguienteCiudad);
+                        //Se le agrega la ciudad destino de la ruta al nuevo camino
+                        nuevoCamino.add(siguienteCiudad);
 
-                    //Se calcula el costo correspondiente a este nuevo potencial Viaje
-                    double nuevoCosto = viajeActual.getCostoTotal() + ruta.getCosto();
+                        //Se calcula el costo correspondiente a este nuevo potencial Viaje
+                        double nuevoCosto = viajeActual.getCostoTotal() + ruta.getCosto();
 
-                    //El potencial Viaje se agrega a la cola de prioridad
-                    cola.add(new Viaje(nuevoCamino, nuevoCosto));
+                        //El potencial Viaje se agrega a la cola de prioridad
+                        cola.add(new Viaje(nuevoCamino, nuevoCosto));
+                    }
+
                 }
+
             }
         }
 

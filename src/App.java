@@ -209,6 +209,10 @@ public class App {
         // Crear ciudades
         ControladorGrafo controladorGrafo = new ControladorGrafo();
 
+        controladorGrafo.agregarLineaAerea("AM", "Aeromexico", true);
+        controladorGrafo.agregarLineaAerea("UA", "UNITED AIRLINES", false);
+        //controladorGrafo.agregarLineaAerea("AM", "Aeromexico", true);
+
         // Agregar ciudades al grafo
         controladorGrafo.agregarCiudad("A","Ciudad A","A","A","A");
         controladorGrafo.agregarCiudad("B","Ciudad B","B","B","B");
@@ -221,20 +225,22 @@ public class App {
         controladorGrafo.agregarCiudad("I","Ciudad I","I","I","I");
 
         // Agregar rutas
-        controladorGrafo.agregarRuta("AEROLINEA",1,"A","B",3.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"A","C",5.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"A","D",4.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"B","E",2.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"C","E",1.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"C","F",2.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"D","F",1.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"E","F",3.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"E","G",2.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"F","E",3.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"F","G",7.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"F","H",5.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"G","I",1.0,0.0,0.0,"FRECUENCIA");
-        controladorGrafo.agregarRuta("AEROLINEA",1,"H","I",2.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"A","B",3.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"A","C",5.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"A","D",4.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"B","E",2.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"C","E",1.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"C","F",2.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"D","F",1.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"E","F",3.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"E","G",2.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"F","E",3.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"F","G",7.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"F","H",5.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("UA",1,"G","I",1.0,0.0,0.0,"FRECUENCIA");
+        controladorGrafo.agregarRuta("AM",1,"H","I",2.0,0.0,0.0,"FRECUENCIA");
+
+        
 
         List <String> caminoDijkstra = controladorGrafo.viajeMenorPrecio("A", "I");
 
@@ -249,5 +255,9 @@ public class App {
         for (Viaje viaje : caminoTop5) {
             System.out.println(viaje+"\n");
         }
+
+        //System.out.println("---------catalogo AeroLineas------------");
+        
+        //System.out.println("app: "+controladorGrafo.grafo.catalogoLineasAereas);
     }
 }
