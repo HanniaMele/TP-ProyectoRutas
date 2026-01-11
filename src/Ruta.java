@@ -1,23 +1,35 @@
 public class Ruta {
 
-    private String clave;
+    private String claveLineaAerea;
     private int numeroRuta;
     private String claveCiudadOrigen;
     private String claveCiudadDestino;
     private double costo;
-    private double HoraSalida;
-    private double HoraLlegada;
+    private double horaSalida;
+    private double horaLlegada;
     private String frecuencia;
 
-    public Ruta(String clave, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, double HoraSalida, double HoraLlegada, String frecuencia) {
-        this.clave = clave;
+    public Ruta(String claveLineaAerea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, double horaSalida, double horaLlegada, String frecuencia) {
+        this.claveLineaAerea = claveLineaAerea;
         this.numeroRuta = numeroRuta;
         this.claveCiudadOrigen = claveCiudadOrigen;
         this.claveCiudadDestino = claveCiudadDestino;
         this.costo = costo;
-        this.HoraSalida = HoraSalida;
-        this.HoraLlegada = HoraLlegada;
+        this.horaSalida = horaSalida;
+        this.horaLlegada = horaLlegada;
         this.frecuencia = frecuencia;
     }
-    
+
+    public String getClaveLineaAerea() {
+        return claveLineaAerea;
+    }
+
+    public String getclaveCiudadDestino(){
+        return claveCiudadDestino;
+    }
+
+    public double getCosto(){
+        return costo;
+    }
+
 }
