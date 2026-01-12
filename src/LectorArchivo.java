@@ -20,8 +20,8 @@ public class LectorArchivo {
     // Parser para procesar las líneas del archivo
     private final ParserLineas parser;
 
-    public LectorArchivo(Grafo repositorioDatos) {
-        this.parser = new ParserLineas(repositorioDatos);
+    public LectorArchivo() { //Grafo repositorioDatos
+        this.parser = new ParserLineas();
     }
 
     // Método para cargar y procesar el archivo
@@ -37,6 +37,8 @@ public class LectorArchivo {
         }
     }
 
+
+
     public int getTotalConsultas() {
         return parser.getConsultas().size();
     }
@@ -44,5 +46,7 @@ public class LectorArchivo {
     public List<Consulta> getConsultas() {
         return parser.getConsultas();
     }
+
+
 
 }

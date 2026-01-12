@@ -6,10 +6,15 @@ import java.util.Map;
 public class Grafo {
     private List<Ciudad> catalogoCiudades;
     public List<LineaAerea> catalogoLineasAereas;
+    private List<Ruta> catalogoRutas;
+    private List<Consulta> catalogoConsultas;
+    
 
     public Grafo() {
         catalogoCiudades = new ArrayList<>();
         catalogoLineasAereas = new ArrayList<>();
+        catalogoRutas = new ArrayList<>();
+        catalogoConsultas = new ArrayList<>();
     }
 
     public List<Ciudad> getCiudades(){
@@ -21,7 +26,7 @@ public class Grafo {
         boolean resultado = false;
 
         for(LineaAerea lineaAerea : catalogoLineasAereas){
-            if(lineaAerea.getClave() == claveLineaAerea && !lineaAerea.getActivo()){
+            if(lineaAerea.getClave().equals(claveLineaAerea)  && !lineaAerea.getActivo()){ //lineaAerea.getClave().equals(claveLineaAerea)
                 resultado = true;
             }
         }
@@ -76,5 +81,25 @@ public class Grafo {
         }
 
         return null;
+    }
+
+    public void agregarConsulta (Consulta consulta) {
+        catalogoConsultas.add(consulta);
+    }
+
+    public List<Consulta> getConsulta(){
+        return catalogoConsultas;
+    }
+
+    public void agregarRuta (Ruta ruta) {
+        catalogoRutas.add(ruta);
+    }
+
+    public List<Ruta> getRuta() {
+        return catalogoRutas;
+    }
+
+    public List<LineaAerea> getLineaAereas() {
+        return catalogoLineasAereas;
     }
 }

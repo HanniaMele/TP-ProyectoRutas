@@ -6,14 +6,19 @@
  * Profesor: Dra. María Lucia Barrón Estrada
  * Fecha: 07-01-2026
  *
- *
+ * MODIFICADO: se a quitado el grafo y se ha hecho que ParserLineas almacene las lineas que va leyendo.
+ * 
+ * ATENCION: ES POSIBLE QUE LAS VARIABLES COLECTION RUTAS Y CONSULTAS DEJEN DE SER LISTAS Y SE VUELVAN HASHMAP
  */
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParserLineas {
     ////////////
@@ -85,36 +90,77 @@ public class ParserLineas {
     private static final Pattern P_CONSULTA = Pattern.compile("^([A-Z]{3})\\s*->\\s*([A-Z]{3})\\s+" + "(\\d{2}/\\d{2}/\\d{4})" + "(?:\\s+(\\d{2}/\\d{2}/\\d{4}))?" + "\\s*\\?$");
 
     // variable final que representa el grafo donde se almacenan los datos parseados
-    private final Grafo repositorioDatos;
+    //private final Grafo repositorioDatos;
+
+    private final List<LineaAerea> aerolineas;
+    private final List<Ciudad> ciudades;
+    private final List<Ruta> rutas;
+    private final List<Consulta> consultas;
+
 
     //--NEW--
-    private final List<Consulta> consultas = new ArrayList<>();
-    public List<Consulta> getConsultas() {
-        return consultas;
-    }
+    //private final List<Consulta> consultas = new ArrayList<>();
+    
+    
+    
     //-----
 
-    public ParserLineas(Grafo repositorioDatos) {
-        this.repositorioDatos = repositorioDatos;
+    public ParserLineas() { //Grafo repositorioDatos
+        //this.repositorioDatos = repositorioDatos;
+        this.aerolineas = new ArrayList<>();
+        this.ciudades = new ArrayList<>();
+        this.rutas = new ArrayList<>();
+        this.consultas = new ArrayList<>();
 
     }
+
+    //////////////////////////////////////////////////////
+    /// GETTERS (PARA OBTENER LOS RESULTADOS Y DEVOLVERLOS)
+    /////////////////////////////////////////////////////
+
+    public List<LineaAerea> getAerolineas() { 
+        return aerolineas; 
+    }
+    public List<Ciudad> getCiudades() { 
+        return ciudades; 
+    }
+    public List<Ruta> getRutas() { 
+        return rutas; 
+    }
+    public List<Consulta> getConsultas() {
+         return consultas; 
+        }
+
+
+
+
+    //---
+    //public List<Consulta> getConsultas() {
+    //    return consultas;
+    //}
+
+    /////////////////////////////////////////////////////////////////////////////////
+    /// PROCESAR LINEAS
+    /////////////////////////////////////////////////////////////////////////////////
 
     private void procesarAerolinea(Matcher m) {
         boolean baja = m.group(1) != null; // si viene "-" al inicio
         String clave = m.group(2);
         String nombre = m.group(3);
 
-        // En tu diseño Grafo usa LISTA para catalogoLineasAereas
-        LineaAerea existente = repositorioDatos.buscarLineaAereaClave(clave);
+        // SE GENERA UNA NUEVA AEROLINEA PARA ALMACENAR LOS DATOS
+        LineaAerea aeroLinea = new LineaAerea(clave, nombre, baja);
+
+        this.aerolineas.add(aeroLinea);
 
         // Si ya existe, la quitamos y la re-agregamos con el estado correcto (no hay setter para activo)
-        if (existente != null) {
-            repositorioDatos.catalogoLineasAereas.removeIf(a -> a.getClave().equals(clave));
-        }
+        //if (existente != null) {
+          //  repositorioDatos.catalogoLineasAereas.removeIf(a -> a.getClave().equals(clave));
+        //}
 
         // '-' => inactiva (activo=false); sin '-' => activa (activo=true)
-        LineaAerea aerolinea = new LineaAerea(clave, nombre, !baja);
-        repositorioDatos.agregarLineaAerea(aerolinea);
+        //LineaAerea aerolinea = new LineaAerea(clave, nombre, !baja);
+        //repositorioDatos.agregarLineaAerea(aerolinea);
     }
 
 
@@ -122,6 +168,18 @@ public class ParserLineas {
     /// Procesa la linea que contiene la informacion de una ciudad
     /// @param lineaCiudad Matcher con la linea ya validada
     private void procesarCiudad(Matcher lineaCiudad) {
+        
+        String clave = lineaCiudad.group(1);
+        
+        boolean existe = ciudades.stream().anyMatch(c -> c.getClave().equals(clave));
+
+        if (existe) return;
+
+        Ciudad ciudad = new Ciudad(clave,lineaCiudad.group(2).trim(),lineaCiudad.group(3).trim(),lineaCiudad.group(4).trim(),lineaCiudad.group(5).trim());
+
+        ciudades.add(ciudad);
+
+        /* 
         String clave = lineaCiudad.group(1);
 
         if (repositorioDatos.buscarCiudad(clave) != null) {
@@ -137,29 +195,37 @@ public class ParserLineas {
         );
 
         repositorioDatos.agregarCiudad(ciudad);
+        */
     }
 
 
-    private void procesarRuta(Matcher m, boolean invertida) {
-        String claveOrigen = m.group(3);
-        String claveDestino = m.group(4);
+    private void procesarRuta(Matcher lineaRuta, boolean invertida) {
+        String claveOrigen = lineaRuta.group(3);
+        String claveDestino = lineaRuta.group(4);
 
         if (invertida) {
-            String tmp = claveOrigen;
+            String temporal = claveOrigen;
             claveOrigen = claveDestino;
-            claveDestino = tmp;
+            claveDestino = temporal;
         }
 
-        String clave = m.group(1);
-        int numeroRuta = Integer.parseInt(m.group(2));
-        String claveCiudadOrigen = m.group(3);
-        String claveCiudadDestino = m.group(4);
-        double costo = Double.parseDouble(m.group(5));
-        LocalTime horaSalida = LocalTime.parse(m.group(6), FORMATO_HORA);
-        LocalTime horaLlegada = LocalTime.parse(m.group(7), FORMATO_HORA);
-        String frecuencia = m.group(8);
+        String clave = lineaRuta.group(1);
+        int numeroRuta = Integer.parseInt(lineaRuta.group(2));
+        String claveCiudadOrigen = lineaRuta.group(3);
+        String claveCiudadDestino = lineaRuta.group(4);
+        double costo = Double.parseDouble(lineaRuta.group(5));
+
+        LocalTime horaSalida = LocalTime.parse(lineaRuta.group(6), FORMATO_HORA);
+        LocalTime horaLlegada = LocalTime.parse(lineaRuta.group(7), FORMATO_HORA);
+
+        String frecuencia = lineaRuta.group(8);
+
+        Ruta ruta = new Ruta(clave, numeroRuta, claveCiudadOrigen, claveCiudadDestino, costo, horaSalida, horaLlegada, lineaRuta.group(8));
+
+        rutas.add(ruta);
 
         // Validaciones mínimas para no guardar basura
+        /*
         if (repositorioDatos.buscarLineaAereaClave(clave) == null) {
             System.out.println("Ruta ignorada: aerolínea no registrada -> " + clave);
             return;
@@ -182,19 +248,20 @@ public class ParserLineas {
 
         // En tu modelo, las rutas viven dentro de la Ciudad origen
         origen.agregarRuta(ruta);
+         */
     }
 
 
-    private void procesarConsulta(Matcher m, boolean invertida) {
-        String origen = m.group(1);
-        String destino = m.group(2);
-        String fechaSalida = m.group(3);
-        String fechaRegreso = m.group(4);
+    private void procesarConsulta(Matcher lineaConsulta, boolean invertida) {
+        String origen = lineaConsulta.group(1);
+        String destino = lineaConsulta.group(2);
+        String fechaSalida = lineaConsulta.group(3);
+        String fechaRegreso = lineaConsulta.group(4);
 
         if (invertida) {
-            String tmp = origen;
+            String temporal = origen;
             origen = destino;
-            destino = tmp;
+            destino = temporal;
         }
 
         Consulta consulta = new Consulta(origen, destino, fechaSalida, fechaRegreso);
@@ -204,13 +271,18 @@ public class ParserLineas {
 
     }
 
+    //////////////////////////////////////////////////////////////////////////////////
+    /// LEER LINEAS
+    /////////////////////////////////////////////////////////////////////////////////
 
     // Prepara la linea leida para asegurarse de que es valida
     // Elimina el espacio en blanco al inicio y al final
     // Si la linea esta vacia o contiene solo un punto, devuelve null
     private String limpiarLinea(String linea) {
 
-        if (linea == null) return null;
+        if (linea == null) {
+            return null;
+        }
 
         // Elimina espacios en blanco al inicio y al final
         linea = linea.trim();
@@ -245,6 +317,7 @@ public class ParserLineas {
         // Elimina espacios en blanco al inicio y al final nuevamente
         linea = linea.trim();
         // Devuelve la linea limpia o null si esta vacia
+        // LA LINEA REGRESADA ESTA POTENCIALMENTE DISEÑADA PARA SER VALIDADA POR LOS PATRONES
         return linea.isEmpty() ? null : linea;
     }
 
@@ -259,29 +332,29 @@ public class ParserLineas {
         linea = limpiarLinea(linea);
         if (linea == null || linea.isEmpty()) return;
 
-        Matcher m;
+        Matcher lineaPatron;
 
-        m = P_RUTA.matcher(linea);
-        if (m.matches()) {
-            procesarRuta(m, invertida);
+        lineaPatron = P_RUTA.matcher(linea);
+        if (lineaPatron.matches()) {
+            procesarRuta(lineaPatron, invertida);
             return;
         }
 
-        m = P_CIUDAD.matcher(linea);
-        if (m.matches()) {
-            procesarCiudad(m);
+        lineaPatron = P_CIUDAD.matcher(linea);
+        if (lineaPatron.matches()) {
+            procesarCiudad(lineaPatron);
             return;
         }
 
-        m = P_AEROLINEA.matcher(linea);
-        if (m.matches()) {
-            procesarAerolinea(m);
+        lineaPatron = P_AEROLINEA.matcher(linea);
+        if (lineaPatron.matches()) {
+            procesarAerolinea(lineaPatron);
             return;
         }
 
-        m = P_CONSULTA.matcher(linea);
-        if (m.matches()) {
-            procesarConsulta(m, invertida);
+        lineaPatron = P_CONSULTA.matcher(linea);
+        if (lineaPatron.matches()) {
+            procesarConsulta(lineaPatron, invertida);
             return;
         }
 

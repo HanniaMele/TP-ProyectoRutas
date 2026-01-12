@@ -1,3 +1,8 @@
+
+/* MODIFICADO:  se a cambiado el tipo de variable de horaSalida y horaLlegada de double a LocalTime
+ */
+
+import java.time.LocalTime;
 public class Ruta {
 
     private String claveLineaAerea;
@@ -5,11 +10,11 @@ public class Ruta {
     private String claveCiudadOrigen;
     private String claveCiudadDestino;
     private double costo;
-    private double horaSalida;
-    private double horaLlegada;
+    private LocalTime horaSalida;
+    private LocalTime horaLlegada;
     private String frecuencia;
 
-    public Ruta(String claveLineaAerea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, double horaSalida, double horaLlegada, String frecuencia) {
+    public Ruta(String claveLineaAerea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, LocalTime horaSalida, LocalTime horaLlegada, String frecuencia) {
         this.claveLineaAerea = claveLineaAerea;
         this.numeroRuta = numeroRuta;
         this.claveCiudadOrigen = claveCiudadOrigen;
@@ -30,6 +35,10 @@ public class Ruta {
 
     public double getCosto(){
         return costo;
+    }
+
+    public String getclaveCiudadOrigen() {
+        return claveCiudadOrigen;
     }
 
 }
