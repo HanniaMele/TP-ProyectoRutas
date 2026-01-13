@@ -1,7 +1,11 @@
+/*
+ * MODIFICADO: Se han agregado los metodos "totalCiudades", "totalLineasAereas", "totalRutas" y "totalConsultas"
+ *
+ * * MODIFICADO: Se han quitado los imports HashMap y Map por que no se utilizan en el presente codigo.
+ */
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Grafo {
     private List<Ciudad> catalogoCiudades;
@@ -39,6 +43,8 @@ public class Grafo {
         catalogoCiudades.add(ciudad);
     }
 
+    // Recibe una clave de ciudad y la busca en el catalogo de ciudades
+    // si existe, regresa la ciudad
     public Ciudad buscarCiudad(String claveCiudad){
 
         for (Ciudad ciudad : catalogoCiudades){
@@ -101,5 +107,21 @@ public class Grafo {
 
     public List<LineaAerea> getLineaAereas() {
         return catalogoLineasAereas;
+    }
+
+    public int totalCiudades() {
+        return catalogoCiudades.size();
+    }
+
+    public int totalLineasAereas() {
+        return catalogoLineasAereas.size();
+    }
+
+    public int totalRutas() {
+        return catalogoRutas.size();
+    }
+
+    public int totalConsultas() {
+        return catalogoConsultas.size();
     }
 }

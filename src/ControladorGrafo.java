@@ -1,9 +1,12 @@
 /*
  *
  * MODIFICADO: Se a agregado el metodo "cargar" con el objetivo de que lea el archivo ".txt"
+ * 
+ * MODIFICADO: Se a quitado del constructor la posibilidad de recibir un grafo del exterior.
+ * Esto para crear y controlar el grafo completamente desde este archivo
+ * 
+ * MODIFICADO: Los metodos "viajemenorPrecio" y "top5viajesBaratos" han cambiado de public a private
  */
-
-import java.util.List;
 
 // IMPORTS NECESARIOS PARA CARGAR ARCHIVO ".txt"
 import java.io.BufferedReader;
@@ -25,19 +28,25 @@ public class ControladorGrafo {
     }
 
     // CONSTRUCTOR QUE RECIBE VARIABLE GRAFO
+    /*
     public ControladorGrafo(Grafo grafo) {
         this.grafo = grafo;
         this.parser = new ParserLineas();
     }
+    */
 
     //////////////////////////////////////////////////////////////////////////////////////////
     /// LECTOR ARCHIVO
     //////////////////////////////////////////////////////////////////////////////////////////
 
+    // Se lee linea por linea el archivo .txt
     public void leerArchivo(String nombreArchivo) {
         try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
             String linea;
+            // el ciclo se repetira hasta terminar de leer todas las lineas
             while ((linea = br.readLine()) != null) {
+                
+                // cada linea es procesada y si es valida se almacena en parser, preparada para ser cargada
                 parser.procesarLinea(linea);
             }
         } catch (IOException e) {
@@ -47,10 +56,13 @@ public class ControladorGrafo {
 
     // Los datos con los que se lleno parser se pasan al grafo
     public void llenarGrafo() {
+
         // =========================
         // PASAR CIUDADES
         // =========================
+        // Se tranfiere cada ciudad guardada en parser a grafo introduciendola una a una
         for (Ciudad ciudad : parser.getCiudades()) {
+            // Si la ciudad no esta dentro de grafo, se almacena
             if (grafo.buscarCiudad(ciudad.getClave()) == null) {
                 grafo.agregarCiudad(ciudad);
             }
@@ -59,7 +71,9 @@ public class ControladorGrafo {
         // =========================
         // PASAR AEROLINEAS
         // =========================
+        // Se almacenan las aerolineas, una a una, en grafo
         for (LineaAerea aerolinea : parser.getAerolineas()) {
+            // Si la clave de la aerolinea no esta en grafo, esta se almacena
             if (grafo.buscarLineaAereaClave(aerolinea.getClave()) == null) {
                 grafo.agregarLineaAerea(aerolinea);
             }
@@ -68,14 +82,21 @@ public class ControladorGrafo {
         // =========================
         // PASAR RUTAS AEREAS
         // =========================
+        // Se almacenan las rutas, una a una, en grafo
         for (Ruta ruta : parser.getRutas()) {
 
+            // Revisa si la ciudad de origen y la ciudad de destino estan en grafo
+            // LAS CIUDADES FUERON AGREGADAS AL PRINCIPIO DE ESTE METODO, POR LO QUE SI NO SE ENCUENTRAN
+            // ENTONCES NO EXISTEN
             Ciudad origen = grafo.buscarCiudad(ruta.getclaveCiudadOrigen());
             Ciudad destino = grafo.buscarCiudad(ruta.getclaveCiudadDestino());
 
             // Solo agregar la ruta si ambas ciudades existen
             if (origen != null && destino != null) {
+                // Se le agrega a la ciudad de origen las rutas de viaje
+                // que surgen desde ella hacia otras ciudades
                 origen.agregarRuta(ruta);     // modelo actual
+                // se agrega la ruta a grafo
                 grafo.agregarRuta(ruta);      // catalogo general
             }
         }
@@ -83,13 +104,14 @@ public class ControladorGrafo {
         // =========================
         // PASAR CONSULTAS
         // =========================
+        // Las consultas se pasan, una a una, a grafo
+        // estas almacenan almacenan los datos referentes a viajes posibles
         for (Consulta consulta : parser.getConsultas()) {
             grafo.agregarConsulta(consulta);
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    ///
     /// Pasar Consultas, Rutas, Ciudades y Lineas Aereas
     /// ///////////////////////////////////////////////////////////////////////////////////
 
@@ -105,6 +127,87 @@ public class ControladorGrafo {
     public List<Consulta> getConsultas() {
          return grafo.getConsulta(); 
         }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /// METODO PARA IMPRIMIR LOS DATOS INGRESADOS
+    /////////////////////////////////////////////////////////////////////////////////////////
+    
+    public void resumenDatosIngresados() {
+        System.out.println("=== Resumen de carga ===");
+        System.out.println("Ciudades cargadas: " + grafo.totalCiudades());
+        System.out.println("Aerolineas cargadas: " + grafo.totalLineasAereas());
+        System.out.println("Rutas cargadas: " + grafo.totalRutas());
+        System.out.println("Consultas cargadas: " + grafo.totalConsultas());
+        System.out.println("===========================");
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /// IMPRIMIR RESULTADOS DE CONSULTAS
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+    public void ImprimirCaminoBarato() {
+        for (Consulta consulta : grafo.getConsulta()) {
+
+            System.out.println("----------------------------------");
+            
+            System.out.println("Consulta: " + consulta.getOrigen() + " -> " + consulta.getDestino());
+            
+            //--------------------------------------------------------------------------------------------
+            //////////////////// CAMINO MAS BARATO ///////////////////////////////////////////////////////
+            // Se genera el camino más barato
+            List<String> camino = viajeMenorPrecio(consulta.getOrigen(),consulta.getDestino());
+
+            // Si no existe un camino posible, se imprime un mensaje de que no hay ruta posible
+            // De lo contrario, si existe un camino posible, se imprimira el mas barato encontrado
+            if (camino == null || camino.isEmpty()) {
+                System.out.println("No hay ruta disponible.");
+            } else {
+                System.out.println("Camino más barato: " + camino);
+            }
+            //---------------------------------------------------------------------------------------------
+            //////////////////////////// 5 CAMINOS  MAS BARATOS ///////////////////////////////////////////
+            // Se obtiene los 5 caminos mas baratos para realizar el viaje
+            List<Viaje> top5 = top5ViajesBaratos(consulta.getOrigen(),consulta.getDestino());
+
+            // Si no existen caminos disponibles para realizar el viaje, se imprime un mensaje que las rutas no disponibles
+            // Si pudieron ser obtenidos, seran impresos
+            if (top5 == null || top5.isEmpty()) {
+                System.out.println("Top 5: No disponible.");
+            } else {
+                System.out.println("Top 5 viajes baratos:");
+                for (Viaje viaje : top5) {
+                    System.out.println("  - " + viaje);
+                }
+            }
+            
+        }
+    }
+
+    /*
+    public void imprimirTop5Caminos() {
+
+        for (Consulta consulta : grafo.getConsulta()) {
+
+            // Se obtiene los 5 caminos mas baratos para realizar el viaje
+            List<Viaje> top5 = top5ViajesBaratos(consulta.getOrigen(),consulta.getDestino());
+
+            // Si no existen caminos disponibles para realizar el viaje, se imprime un mensaje que las rutas no disponibles
+            // Si pudieron ser obtenidos, seran impresos
+            if (top5 == null || top5.isEmpty()) {
+                System.out.println("Top 5: No disponible.");
+            } else {
+                System.out.println("Top 5 viajes baratos:");
+                for (Viaje viaje : top5) {
+                    System.out.println("  - " + viaje);
+                }
+            }
+
+        }
+        
+    }
+     */
+
+
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /// METODOS PARA INTRODUCIR DIRECTAMENTE LINEAS Y AGREGARLAS LA GRAFO
@@ -160,16 +263,15 @@ public class ControladorGrafo {
     }
 
 
-
-
     //////////////////////////////////////////////////////////////////////////////////////////
     /// CALCULAR EL CAMINO DE MENOR PRECIO
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    public List<String> viajeMenorPrecio(String claveCiudadOrigen, String claveCiudadDestino){
+    private List<String> viajeMenorPrecio(String claveCiudadOrigen, String claveCiudadDestino){
 
         List<String> camino = null;
 
+        // Si ambas ciudades existen, realiza una busqueda del camino que las conecte a ambas
         if(grafo.buscarCiudad(claveCiudadOrigen) != null && grafo.buscarCiudad(claveCiudadDestino) != null){
 
             AlgoritmoBusquedaCamino algoritmo = new AlgoritmoBusquedaCamino();
@@ -182,7 +284,7 @@ public class ControladorGrafo {
     /////////////////////////////////////////////////////////////////////////////////////////
     /// 5 VIAJES MAS BARATOS
     /////////////////////////////////////////////////////////////////////////////////////////
-    public List<Viaje> top5ViajesBaratos(String claveCiudadOrigen, String claveCiudadDestino){
+    private List<Viaje> top5ViajesBaratos(String claveCiudadOrigen, String claveCiudadDestino){
 
         List<Viaje> viajes = null;
 

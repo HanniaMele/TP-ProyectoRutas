@@ -1,3 +1,10 @@
+/*
+ *
+ * MODIFICACION: la variable "menorDistancia" del metodo "viajeMenorPrecio" se le a cambiado el nombre por "menorCostoDistancia"
+ *  
+ */
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,6 +17,8 @@ import java.util.Set;
 public class AlgoritmoBusquedaCamino {
 
     //Metodo que obtiene el viaje con menor precio
+    // origen = clave de la ciudad de origen
+    // destino = clave de la ciudad de destino
     public List<String> viajeMenorPrecio(Grafo grafo, String origen, String destino) {
 
         // Map para guardar las ciudades del grafo con su costo mas barato
@@ -38,16 +47,18 @@ public class AlgoritmoBusquedaCamino {
             //Se obtiene la Ciudad correspondiente a actual
             Ciudad ciudadActual = grafo.buscarCiudad(actual);
 
-            //Ciclo para todas la rutas de ciudadActual
+            // Ciclo para todas la rutas de ciudadActual
+            // Toma una ruta a la vez y la va comparando
             for (Ruta ruta : ciudadActual.getRutas()) {
 
-                //Si la ciudad destino de la ruta no esta marcada como visitada
+                //Si la ciudad destino de la ruta no esta marcada como visitada avanza
                 if (!ciudadesVisitadas.contains(ruta.getclaveCiudadDestino())) {
 
                     //Se calcula el nuevo costo al sumar el costo de esta ruta con el acumulado actual
                     double nuevoCosto = menorCostoPorCiudad.get(actual) + ruta.getCosto();
 
-                    //Si el nuevo costo es menor que un posible costo registrado anteiormente para llegar a la ciudad destino de esta ruta en el map menorCostoPorCiudad, entonces se reemplaza el costo anterior por este
+                    // Si el nuevo costo es menor que un posible costo registrado anteriormente para llegar a la ciudad destino 
+                    // de esta ruta en el map menorCostoPorCiudad, entonces se reemplaza el costo anterior por este
                     if (nuevoCosto < menorCostoPorCiudad.get(ruta.getclaveCiudadDestino())) {
 
                         //Se reemplaza el costo anterior por uno mas barato
@@ -66,15 +77,15 @@ public class AlgoritmoBusquedaCamino {
             actual = null;
 
             //Se establece menorDistancia como infinito para posteriormente buscar un costo menor
-            double menorDistancia = Double.POSITIVE_INFINITY;
+            double menorCostoDistancia = Double.POSITIVE_INFINITY;
 
             //Se recorre los keys del map menorCostoPorCiudad
             for (String ciudad : menorCostoPorCiudad.keySet()) {
 
                 //Si aun hay ciudades sin visitar y que es posible llegar a ellas, se obtiene la de menor costo acumulado
-                if (!ciudadesVisitadas.contains(ciudad) && menorCostoPorCiudad.get(ciudad) < menorDistancia) {
+                if (!ciudadesVisitadas.contains(ciudad) && menorCostoPorCiudad.get(ciudad) < menorCostoDistancia) {
 
-                    menorDistancia = menorCostoPorCiudad.get(ciudad);
+                    menorCostoDistancia = menorCostoPorCiudad.get(ciudad);
 
                     //La ciudad se guarda en actual para revisar sus rutas
                     actual = ciudad;
