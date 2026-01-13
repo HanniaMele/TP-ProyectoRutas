@@ -1,7 +1,10 @@
 /*
- *
- * MODIFICACION: no se a modificado nadas
- * 
+ * Titulo: Ciudad
+ * Descripción: Clase que representa una ciudad
+ * @autor: Jared Eliezer Baldenegro Gomez; Jimer Orlando Diaz Murillo y Hannia Melendres Samaniego
+ * Materia: Tecnologías de programación
+ * Profesor: Dra. María Lucia Barrón Estrada
+ * Fecha: 07-01-2026
  */
 
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ import java.util.List;
 
 public class Ciudad {
 
+    //atributos
     private String clave;
     private String nombreCiudad;
     private String estado;
@@ -16,6 +20,7 @@ public class Ciudad {
     private String continente;
     private List<Ruta> rutas; //Lista de rutas
 
+    //constructor
     public Ciudad(String clave, String nombreCiudad, String estado, String pais, String continente) {
         this.clave = clave;
         this.nombreCiudad = nombreCiudad;
@@ -25,6 +30,7 @@ public class Ciudad {
         this.rutas = new ArrayList<>();
     }
 
+    //getters
     public String getClave(){
         return clave;
     }

@@ -1,10 +1,19 @@
-
-/* MODIFICADO:  se a cambiado el tipo de variable de horaSalida y horaLlegada de double a LocalTime
+/*
+/*
+ * Titulo: Ruta
+ * Descripción: Clase que representa una ruta
+ * @autor: Jared Eliezer Baldenegro Gomez; Jimer Orlando Diaz Murillo y Hannia Melendres Samaniego
+ * Materia: Tecnologías de programación
+ * Profesor: Dra. María Lucia Barrón Estrada
+ * Fecha: 07-01-2026
+ MODIFICADO:  se a cambiado el tipo de variable de horaSalida y horaLlegada de double a LocalTime
  */
 
+import java.time.Duration;
 import java.time.LocalTime;
 public class Ruta {
 
+    //atributos
     private String claveLineaAerea;
     private int numeroRuta;
     private String claveCiudadOrigen;
@@ -14,6 +23,7 @@ public class Ruta {
     private LocalTime horaLlegada;
     private String frecuencia;
 
+    //constructor
     public Ruta(String claveLineaAerea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, LocalTime horaSalida, LocalTime horaLlegada, String frecuencia) {
         this.claveLineaAerea = claveLineaAerea;
         this.numeroRuta = numeroRuta;
@@ -25,6 +35,7 @@ public class Ruta {
         this.frecuencia = frecuencia;
     }
 
+    //getters
     public String getClaveLineaAerea() {
         return claveLineaAerea;
     }
@@ -39,6 +50,11 @@ public class Ruta {
 
     public String getclaveCiudadOrigen() {
         return claveCiudadOrigen;
+    }
+
+    //Metodo que retorna la duracion de la ruta
+    public Duration getDuracion(){
+        return Duration.between(horaSalida, horaLlegada);
     }
 
 }

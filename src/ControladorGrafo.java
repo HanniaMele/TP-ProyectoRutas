@@ -1,8 +1,13 @@
-/*
+/* Titulo: ControladorGrafo
+ * Descripción: Clase controlador de grafo
+ * @autor: Jared Eliezer Baldenegro Gomez; Jimer Orlando Diaz Murillo y Hannia Melendres Samaniego
+ * Materia: Tecnologías de programación
+ * Profesor: Dra. María Lucia Barrón Estrada
+ * Fecha: 07-01-2026
  *
- * MODIFICADO: Se a agregado el metodo "cargar" con el objetivo de que lea el archivo ".txt"
+ * MODIFICADO: Se ha agregado el metodo "cargar" con el objetivo de que lea el archivo ".txt"
  * 
- * MODIFICADO: Se a quitado del constructor la posibilidad de recibir un grafo del exterior.
+ * MODIFICADO: Se ha quitado del constructor la posibilidad de recibir un grafo del exterior.
  * Esto para crear y controlar el grafo completamente desde este archivo
  * 
  * MODIFICADO: Los metodos "viajemenorPrecio" y "top5viajesBaratos" han cambiado de public a private
@@ -17,10 +22,11 @@ import java.util.List;
 
 public class ControladorGrafo {
 
-    public Grafo grafo;
+    //atributos
+    private Grafo grafo;
     private final ParserLineas parser;
 
-    // CONSTRUCTOR VACIO
+    // CONSTRUCTOR
     public ControladorGrafo(){
         this.grafo = new Grafo();
         this.parser = new ParserLineas();
@@ -115,7 +121,7 @@ public class ControladorGrafo {
     /// Pasar Consultas, Rutas, Ciudades y Lineas Aereas
     /// ///////////////////////////////////////////////////////////////////////////////////
 
-     public List<LineaAerea> getAerolineas() { 
+    public List<LineaAerea> getAerolineas() {
         return grafo.getLineaAereas(); 
     }
     public List<Ciudad> getCiudades() { 

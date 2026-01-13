@@ -1,4 +1,10 @@
 /*
+ * Titulo: AlgoritmoBusquedaCamino
+ * Descripción: Clase que realiza la búsqueda de caminos dentro del grafo
+ * @autor: Jared Eliezer Baldenegro Gomez; Jimer Orlando Diaz Murillo y Hannia Melendres Samaniego
+ * Materia: Tecnologías de programación
+ * Profesor: Dra. María Lucia Barrón Estrada
+ * Fecha: 07-01-2026
  *
  * MODIFICACION: la variable "menorDistancia" del metodo "viajeMenorPrecio" se le a cambiado el nombre por "menorCostoDistancia"
  * 
@@ -217,32 +223,28 @@ public class AlgoritmoBusquedaCamino {
                 //System.out.println("Ruta " + ruta.getClaveLineaAerea() +" activa? " +!grafo.buscarLineaAereaInactiva(ruta.getClaveLineaAerea()));
                 ////////////////////////////////////////////////////////////////
                 //Si esa linea no esta activa no se considera
-                if(!grafo.buscarLineaAereaInactiva(ruta.getClaveLineaAerea())){
+                if(grafo.buscarLineaAereaInactiva(ruta.getClaveLineaAerea())) continue;
 
-                    //Se obtiene el destino de la ruta
-                    String claveSiguienteCiudad = ruta.getclaveCiudadDestino();
+                //Se obtiene el destino de la ruta
+                String claveSiguienteCiudad = ruta.getclaveCiudadDestino();
 
-                    //Se obtiene el objeto Ciudad del destino de la ruta
-                    Ciudad siguienteCiudad = grafo.buscarCiudad(claveSiguienteCiudad);
+                //Se obtiene el objeto Ciudad del destino de la ruta
+                Ciudad siguienteCiudad = grafo.buscarCiudad(claveSiguienteCiudad);
 
-                    //Para evitar que el algoritmo se atrape en un ciclo se considera que la ciudad destino de la ruta no este actualmente en el camino actual
-                    if (!caminoActualcontieneCiudad(caminoActual, siguienteCiudad)) {
+                //Para evitar que el algoritmo se atrape en un ciclo se considera que la ciudad destino de la ruta no este actualmente en el camino actual
+                if (caminoActualcontieneCiudad(caminoActual, siguienteCiudad)) continue;
 
-                        //Se crea nueva lista que corresponde al camino que se seguira en el nuevo objeto Viaje
-                        List<Ciudad> nuevoCamino = new ArrayList<>(caminoActual);
+                //Se crea nueva lista que corresponde al camino que se seguira en el nuevo objeto Viaje
+                List<Ciudad> nuevoCamino = new ArrayList<>(caminoActual);
 
-                        //Se le agrega la ciudad destino de la ruta al nuevo camino
-                        nuevoCamino.add(siguienteCiudad);
+                //Se le agrega la ciudad destino de la ruta al nuevo camino
+                nuevoCamino.add(siguienteCiudad);
 
-                        //Se calcula el costo correspondiente a este nuevo potencial Viaje
-                        double nuevoCosto = viajeActual.getCostoTotal() + ruta.getCosto();
+                //Se calcula el costo correspondiente a este nuevo potencial Viaje
+                double nuevoCosto = viajeActual.getCostoTotal() + ruta.getCosto();
 
-                        //El potencial Viaje se agrega a la cola de prioridad
-                        cola.add(new Viaje(nuevoCamino, nuevoCosto));
-                    }
-
-                }
-
+                //El potencial Viaje se agrega a la cola de prioridad
+                cola.add(new Viaje(nuevoCamino, nuevoCosto));
             }
         }
 
@@ -251,7 +253,7 @@ public class AlgoritmoBusquedaCamino {
 
 
     private boolean caminoActualcontieneCiudad (List<Ciudad> caminoActual, Ciudad siguienteCiudad) {
-        
+
         boolean yaVisitada = false;
         for (Ciudad ciudad : caminoActual) {
             if (ciudad.getClave().equals(siguienteCiudad.getClave())) {

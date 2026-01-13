@@ -24,71 +24,116 @@ public class Rutas {
 
     // true = se introduce el nombre del archivo
     // false = el nombre del archivo esta establecido 
-    public static final boolean DEBUG_INTRODUCIR_NOMBRE_ARCHIVO = false;
+    public static final boolean DEBUG_INTRODUCIR_NOMBRE_ARCHIVO = true;
+
+    //Metodo static para preguntar si se desea continuar procesando datos
+    public static String pregunta(String pregunta) {
+        String respuesta = "";
+
+        boolean entradaValida = false;
+
+        while (!entradaValida) {
+            System.out.println(pregunta);
+
+            respuesta = Keyboard.readString().toUpperCase();
+
+            switch (respuesta) {
+                case "S":
+                    entradaValida = true;
+                    break;
+
+                case "N":
+                    entradaValida = true;
+                    break;
+
+                default:
+                    System.out.println("Entrada invalida.");
+                    System.out.println("");
+                    entradaValida = false;
+                    break;
+
+            }
+        }
+
+
+        return respuesta;
+
+    }
 
     public static void main(String[] args) {
 
+        String continuar = "S";
 
-        String nombreArchivo;
+        while (continuar.equals("S")) {
 
-        // si es true se  introduce el nombre del archivo
-        // si es false se utiliza el indicado en codigo
-        if (DEBUG_INTRODUCIR_NOMBRE_ARCHIVO) {
-            
-            System.out.print("Archivo de entrada: ");
-            nombreArchivo = Keyboard.readString();
+            String nombreArchivo;
+
+            // si es true se  introduce el nombre del archivo
+            // si es false se utiliza el indicado en codigo
+            if (DEBUG_INTRODUCIR_NOMBRE_ARCHIVO) {
+
+                System.out.print("Archivo de entrada: ");
+                nombreArchivo = Keyboard.readString();
 
 
-        } else {
-            //nombreArchivo = "prueba 1.txt";
-            nombreArchivo = "PRUEBA 2.txt";
+            } else {
+                //nombreArchivo = "prueba 1.txt";
+                nombreArchivo = "PRUEBA 2.txt";
+            }
+
+
+
+            File archivo = new File(nombreArchivo);
+
+            // SE COMPRUEBA SI EL ARCHIVO EXISTE
+            if (!archivo.exists()) {
+                System.out.println("El archivo NO existe.");
+
+            } else {
+
+                System.out.println("El archivo existe.\n");
+
+                // Repositorio central de datos (Grafo real)
+                //Grafo repositorioDatos = new Grafo();
+
+                // Cargar archivo
+                //LectorArchivo lector = new LectorArchivo(repositorioDatos);
+                //lector.cargar(nombreArchivo);
+
+                // Ejecutar consultas con el algoritmo (a través del controlador)
+                ControladorGrafo controlador = new ControladorGrafo();
+
+                // Se lee el archivo .txt
+                controlador.leerArchivo(nombreArchivo);
+
+                // Los datos del archivo .txt capturados se almacenan en el grafo
+                controlador.llenarGrafo();
+
+                // imprime los datos ingresados en el grafo
+                controlador.resumenDatosIngresados();
+
+                controlador.ImprimirCaminoBarato();
+
+                //controlador.imprimirTop5Caminos();
+
+                ////////////////////////////////////////////////////////////////////////////////
+                /// los datos del controlador se usan para obtener los viajes baratos
+
+
+
+                /// //////////////////////////////////////////////////////////////////////////////
+
+            }
+
+            continuar = pregunta("¿Continuar procesando datos? (S/N)");
+
+            System.out.println(continuar);
+
         }
 
-        
+        System.out.println("Fin del programa");
 
-        File archivo = new File(nombreArchivo);
 
-        // SE COMPRUEBA SI EL ARCHIVO EXISTE
-        if (!archivo.exists()) {
-            System.out.println("El archivo NO existe.");
-
-        } else {
-
-            System.out.println("El archivo existe.\n");
-
-            // Repositorio central de datos (Grafo real)
-            //Grafo repositorioDatos = new Grafo();
-
-            // Cargar archivo
-            //LectorArchivo lector = new LectorArchivo(repositorioDatos);
-            //lector.cargar(nombreArchivo);
-            
-            // Ejecutar consultas con el algoritmo (a través del controlador)
-            ControladorGrafo controlador = new ControladorGrafo();
-
-            // Se lee el archivo .txt 
-            controlador.leerArchivo(nombreArchivo);
-
-            // Los datos del archivo .txt capturados se almacenan en el grafo
-            controlador.llenarGrafo();
-
-            // imprime los datos ingresados en el grafo
-            controlador.resumenDatosIngresados();
-
-            controlador.ImprimirCaminoBarato();
-
-            //controlador.imprimirTop5Caminos();
-
-            ////////////////////////////////////////////////////////////////////////////////
-            /// los datos del controlador se usan para obtener los viajes baratos
-            
-            
-
-            /// //////////////////////////////////////////////////////////////////////////////
-
-           
-
-        }
         
     }
 }

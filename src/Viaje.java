@@ -1,3 +1,12 @@
+/*
+ * Titulo: Viaje
+ * Descripción: Clase que representa un viaje
+ * @autor: Jared Eliezer Baldenegro Gomez; Jimer Orlando Diaz Murillo y Hannia Melendres Samaniego
+ * Materia: Tecnologías de programación
+ * Profesor: Dra. María Lucia Barrón Estrada
+ * Fecha: 07-01-2026
+ */
+
 import java.util.List;
 
 public class Viaje implements Comparable<Viaje>{
@@ -6,11 +15,13 @@ public class Viaje implements Comparable<Viaje>{
     private List<Ciudad> ciudades;
     private double costoTotal;
 
+    //constructor
     public Viaje(List<Ciudad> ciudades, double costoTotal) {
         this.ciudades = ciudades;
         this.costoTotal = costoTotal;
     }
 
+    //getters
     public List<Ciudad> getCiudades() {
         return ciudades;
     }
