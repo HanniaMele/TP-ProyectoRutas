@@ -9,6 +9,14 @@
  * MODIFICADO: se a quitado el grafo y se ha hecho que ParserLineas almacene las lineas que va leyendo.
  * 
  * ATENCION: ES POSIBLE QUE LAS VARIABLES COLECTION RUTAS Y CONSULTAS DEJEN DE SER LISTAS Y SE VUELVAN HASHMAP
+ * 
+ * 
+ * MODIFICADO: En el metodo procesarAerolinea se a agregado la linea:
+ * boolean baja = m.group(1) != null; // si viene "-" al inicio
+
+   oolean activo = !baja;
+
+   Esto para asegurar que las erolineas inicien activas
  */
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -145,11 +153,14 @@ public class ParserLineas {
 
     private void procesarAerolinea(Matcher m) {
         boolean baja = m.group(1) != null; // si viene "-" al inicio
+
+        boolean activo = !baja;
+
         String clave = m.group(2);
         String nombre = m.group(3);
 
         // SE GENERA UNA NUEVA AEROLINEA PARA ALMACENAR LOS DATOS
-        LineaAerea aeroLinea = new LineaAerea(clave, nombre, baja);
+        LineaAerea aeroLinea = new LineaAerea(clave, nombre, activo); //
 
         this.aerolineas.add(aeroLinea);
 

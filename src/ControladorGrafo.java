@@ -139,6 +139,15 @@ public class ControladorGrafo {
         System.out.println("Rutas cargadas: " + grafo.totalRutas());
         System.out.println("Consultas cargadas: " + grafo.totalConsultas());
         System.out.println("===========================");
+
+
+        //////////////////////////////////////////////////
+        /// linea DEBUG para comprobar la carga de las aerolineas si era true o false
+        /*
+        for (LineaAerea l : grafo.getLineaAereas()) {
+            System.out.println("Linea " + l.getClave() +" activo=" + l.getActivo());
+        }
+        */
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

@@ -40,8 +40,8 @@ public class Rutas {
 
 
         } else {
-            nombreArchivo = "prueba 1.txt";
-            //nombreArchivo = "PRUEBA 2.txt";
+            //nombreArchivo = "prueba 1.txt";
+            nombreArchivo = "PRUEBA 2.txt";
         }
 
         
@@ -86,49 +86,7 @@ public class Rutas {
 
             /// //////////////////////////////////////////////////////////////////////////////
 
-            // Resumen
-           // System.out.println("=== Resumen de carga ===");
-            //System.out.println("Ciudades cargadas: " + repositorioDatos.getCiudades().size());
-            //System.out.println("Aerolineas cargadas: " + repositorioDatos.catalogoLineasAereas.size());
-
-            //int totalRutas = 0;
-            //for (Ciudad ciudad : repositorioDatos.getCiudades()) {
-              //  totalRutas += ciudad.getRutas().size();
-            //}
-            //System.out.println("Rutas cargadas: " + totalRutas);
-
-            //List<Consulta> consultas = repositorioDatos.getConsulta(); //lector.getConsultas()
-            //System.out.println("Consultas cargadas: " + consultas.size());
-            //System.out.println();
-
-            // Ejecutar consultas con el algoritmo (a través del controlador)
-            //ControladorGrafo controlador = new ControladorGrafo(repositorioDatos);
-
-            //System.out.println("=== Resultados de consultas ===");
-            //for (Consulta c : consultas) {
-              //  System.out.println("----------------------------------");
-               // System.out.println("Consulta: " + c.getOrigen() + " -> " + c.getDestino());
-
-                // Camino más barato (lista de claves de ciudad / o como lo construya tu algoritmo)
-                //List<String> camino = controlador.viajeMenorPrecio(c.getOrigen(), c.getDestino());
-                //if (camino == null || camino.isEmpty()) {
-                  //  System.out.println("No hay ruta disponible.");
-                //} else {
-                  //  System.out.println("Camino más barato: " + camino);
-                //}
-
-                // Top 5 (si aplica)
-                //List<Viaje> top5 = controlador.top5ViajesBaratos(c.getOrigen(), c.getDestino());
-                //if (top5 == null || top5.isEmpty()) {
-                //    System.out.println("Top 5: No disponible.");
-                //} else {
-                  //  System.out.println("Top 5 viajes baratos:");
-                   // for (Viaje v : top5) {
-                     //   System.out.println("  - " + v);
-                    //}
-               // }
-            //}
-            //System.out.println("----------------------------------");
+           
 
         }
         

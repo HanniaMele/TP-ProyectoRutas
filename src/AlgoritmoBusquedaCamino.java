@@ -1,8 +1,72 @@
 /*
  *
  * MODIFICACION: la variable "menorDistancia" del metodo "viajeMenorPrecio" se le a cambiado el nombre por "menorCostoDistancia"
- *  
- */
+ * 
+ * MODIFICACION: en el metodo "Top5ViajesBaratos" se a modificado el if (ultimaCiudad.equals(destino)) por
+ * if (ultimaCiudad.getClave().equals(destino.getClave()))
+ * Esto porque equals compara referencias. Con objetos pregunta si ambos apuntan al mismo objeto, como no es asi, nunca se
+ * cumple el condicional
+ * 
+ * MODIFICACION: Se modifico el if (!caminoActual.contains(siguienteCiudad))
+ * y en su lugar se puso if (!caminoActualcontieneCiudad(caminoActual, siguienteCiudad)) porque contains tiene problemas al
+ * utilizar objetos, ya que depende de "equals"
+ * 
+ * MODIFICACION: Se agrego el metodo "caminoActualcontieneCiudad" para resolver el problema de "contains" en el if anteriormente
+ * descrito
+ * 
+ * 
+ * MODIFICACION: SE A AGREGADO LA LINEA System.out.println("Expandiendo desde: " + ultimaCiudad.getClave() +" | rutas: " + ultimaCiudad.getRutas().size());
+ * PARA SABER PORQUE NO DESARROLLABA EL TOP5
+ * 
+ * EL PROBLEMA PUEDE SER:
+ * 
+ * Este if está bloqueando todas las rutas: if (!grafo.buscarLineaAereaInactiva(ruta.getClaveLineaAerea())) {
+Y eso significa una sola cosa posible:
+buscarLineaAereaInactiva(...) está devolviendo true para TODAS las rutas
+O sea:
+para el algoritmo, todas las aerolíneas están inactivas
+ 
+
+ MODIFICACION: SE A AGREGADO LA SIGUIENTE LINEA
+ System.out.println("Ruta " + ruta.getClaveLineaAerea() +" activa? " +!grafo.buscarLineaAereaInactiva(ruta.getClaveLineaAerea()));
+
+
+ y SE HA DESCUBIERTO QUE IMPRIME:
+ ----------------------------------
+Consulta: MEX -> MZT
+Camino más barato: [MEX, MZT]
+Expandiendo desde: MEX | rutas: 25
+Ruta AM activa? false
+Ruta AM activa? false
+Ruta AM activa? false
+Ruta AM activa? false
+Ruta AM activa? false
+Ruta AM activa? false
+Ruta AM activa? false
+Ruta IT activa? false
+Ruta IT activa? false
+Ruta IT activa? false
+Ruta IT activa? false
+Ruta IT activa? false
+Ruta IT activa? false
+Ruta IT activa? false
+Ruta CN activa? false
+Ruta AM activa? false
+Ruta DL activa? false
+Ruta DL activa? false
+Ruta DL activa? false
+Ruta DL activa? false
+Ruta DL activa? false
+Ruta DL activa? false
+Ruta DL activa? false
+Ruta DL activa? false
+Ruta AF activa? false
+Top 5: No disponible.
+
+ El if(!grafo.buscarLineaAereaInactiva(ruta.getClaveLineaAerea()))
+ hace que todas las lineas se consideren inactivas y por ende no trabaja
+
+*/
 
 
 import java.util.ArrayList;
@@ -136,14 +200,22 @@ public class AlgoritmoBusquedaCamino {
             Ciudad ultimaCiudad = caminoActual.get(caminoActual.size() - 1);
 
             //Si la ultima ciudad que se visita es el destino deseado, añadimos el Viaje al resultado y se continua con el ciclo
-            if (ultimaCiudad.equals(destino)) {
+            if (ultimaCiudad.getClave().equals(destino.getClave())) {
                 resultado.add(viajeActual);
                 continue;
             }
 
+            ///////////////////////////////////////////////////////////////////
+            //////////Linea DEBUG para revisar si funciona la generacion de 5 rutas
+            //System.out.println("Expandiendo desde: " + ultimaCiudad.getClave() +" | rutas: " + ultimaCiudad.getRutas().size());
+            ///////////////////////////////////////////////////////////////////
             //Por cada ruta en ultimaCiudad se crea un nuevo Viaje con su correspondiente costo. En caso de no haber ruta entonces ese Viaje no puede llevar al destino y no genera nuevos potenciales Viajes
             for (Ruta ruta : ultimaCiudad.getRutas()) {
 
+                ////////////////////////////////////////////////////////////////
+                /// LINEA DEBUG PARA SABER COMO SE GENERAN LAS LINEAS (SI TRUE O FALSE)
+                //System.out.println("Ruta " + ruta.getClaveLineaAerea() +" activa? " +!grafo.buscarLineaAereaInactiva(ruta.getClaveLineaAerea()));
+                ////////////////////////////////////////////////////////////////
                 //Si esa linea no esta activa no se considera
                 if(!grafo.buscarLineaAereaInactiva(ruta.getClaveLineaAerea())){
 
@@ -154,7 +226,7 @@ public class AlgoritmoBusquedaCamino {
                     Ciudad siguienteCiudad = grafo.buscarCiudad(claveSiguienteCiudad);
 
                     //Para evitar que el algoritmo se atrape en un ciclo se considera que la ciudad destino de la ruta no este actualmente en el camino actual
-                    if (!caminoActual.contains(siguienteCiudad)) {
+                    if (!caminoActualcontieneCiudad(caminoActual, siguienteCiudad)) {
 
                         //Se crea nueva lista que corresponde al camino que se seguira en el nuevo objeto Viaje
                         List<Ciudad> nuevoCamino = new ArrayList<>(caminoActual);
@@ -175,5 +247,19 @@ public class AlgoritmoBusquedaCamino {
         }
 
         return resultado;
+    }
+
+
+    private boolean caminoActualcontieneCiudad (List<Ciudad> caminoActual, Ciudad siguienteCiudad) {
+        
+        boolean yaVisitada = false;
+        for (Ciudad ciudad : caminoActual) {
+            if (ciudad.getClave().equals(siguienteCiudad.getClave())) {
+                yaVisitada = true;
+                break;
+            }
+        }
+
+        return yaVisitada;
     }
 }
