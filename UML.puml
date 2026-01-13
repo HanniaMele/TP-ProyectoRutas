@@ -1,0 +1,156 @@
+@startuml
+class AlgoritmoBusquedaCamino {
+    + viajeMenorPrecio(): List<String>
+    + top5ViajesBaratos(): List<Viaje>
+    + caminoActualcontieneCiudad(): boolean
+}
+
+class Ciudad{
+    - clave: String
+    - nombreCiudad: String
+    - estado: String
+    - pais: String
+    - continente: String
+    - rutas: List<Ruta>
+    + getClave(): String
+    + agregarRuta(): void
+    + getRutas(): List<Ruta>
+    + toString(): String
+}
+
+class Consulta{
+    - origen: String
+    - destino: String
+    - fechaSalida: String
+    - fechaRegreso: String
+    + getOrigen(): String
+    + getDestino(): String
+    + getFechaSalida(): String
+    + getFechaRegreso(): String
+}
+
+class ControladorGrafo{
+    - grafo: Grafo
+    - Parser: parserLineas
+    + leerArchivo(): void
+    + llenarGrado(): void
+    + getAerolineas(): List<LineaAerea>
+    + getCiudades(): List<Ciudad>
+    + getRutas(): List<Ruta>
+    + getConsultas(): List<Consulta>
+    + resumenDatosIngresados(): void
+    + ImprimirCaminoBarato(): void
+    + agregarLineaAerea(String clave, String nombreLineaAerea, boolean activo): boolean
+    + agregarCiudad(String clave, String nombreCiudad, String estado, String pais, String continente): boolean
+    + agregarRuta(String claveAerolinea, int numeroRuta, String claveCiudadOrigen, String claveCiudadDestino, double costo, LocalTime horaSalida, LocalTime horaLlegada, String frecuencia): boolean
+    + viajeMenorPrecio(String claveCiudadOrigen, String claveCiudadDestino): List<String>
+    + top5ViajesBaratos(String claveCiudadOrigen, String claveCiudadDestino): List<Viaje>
+}
+
+class Grafo{
+    - catalogoCiudades: List<Ciudad>
+    - catalogoLineasAereas: List<LineaAerea>
+    - catalogoRutas: private List<Ruta>
+    - catalogoConsultas: List<Consulta>
+    + getCiudades(): List<Ciudad>
+    + buscarLineaAereaInactiva(String claveLineaAerea): boolean
+    + agregarCiudad(Ciudad ciudad): void
+    + buscarCiudad(String claveCiudad): Ciudad
+    + agregarLineaAerea(LineaAerea nuevaLineaAerea): void
+    + buscarLineaAereaNombre(String nombreLineaAerea): LineaAerea
+    + buscarLineaAereaClave(String claveAeroLinea): LineaAerea
+    + agregarConsulta (Consulta consulta): void
+    + getConsulta(): List<Consulta>
+    + agregarRuta (Ruta ruta): void
+    + getRuta(): List<Ruta>
+    + getLineaAereas(): List<LineaAerea>
+    + totalCiudades(): int
+    + totalLineasAereas(): int
+    + totalRutas(): int
+    + totalConsultas(): int
+}
+
+class Keyboard{
+}
+
+class LineaAerea {
+    - clave: String
+    - nombreLineaAerea: String
+    - activo: boolean
+    + getClave(): String
+    + getNombreLineaAerea(): String
+    + getActivo(): boolean
+    + equals(): boolean
+    + hashCode(): int
+    + toString(): String
+}
+
+class ParserLinea {
+    - <Final> DateTimeFormatter FORMATO_HORA: DateTimeFormatter
+    - <Final> Pattern P_AEROLINEA: Pattern
+    - <Final> Pattern P_CIUDAD: Pattern
+    - <Final> Pattern P_RUTA: Pattern
+    - <Final> Pattern P_CONSULTA: Pattern
+    - <Final> aerolineas: List<LineaAerea>
+    - <Final> ciudades: List<Ciudad>
+    - <Final> rutas: List<Ruta>
+    - <Final> consultas: List<Consulta>
+    + getAerolineas(): List<LineaAerea>
+    + getCiudades(): List<Ciudad>
+    + getRutas(): List<Ruta>
+    + getConsultas(): List<Consulta>
+    - procesarAerolinea(Matcher m): void
+    - procesarCiudad(Matcher lineaCiudad): void
+    - procesarRuta(Matcher lineaRuta, boolean invertida): void
+    - procesarConsulta(Matcher lineaConsulta, boolean invertida): void
+    - limpiarLinea(String linea): String
+    + procesarLinea(String linea): void
+}
+
+class Ruta{
+    - claveLineaAerea: String
+    - numeroRuta: int
+    - claveCiudadOrigen: String
+    - claveCiudadDestino: String
+    - costo: double
+    - horaSalida: LocalTime
+    - horaLlegada: LocalTime
+    - frecuencia: String
+    + getClaveLineaAerea(): String
+    + getclaveCiudadDestino(): String
+    + getCosto(): double
+    + getclaveCiudadOrigen():
+
+}
+
+class Rutas{
+
+}
+
+class Viaje{
+    - ciudades: List<Ciudad>
+    - costoTotal: double
+    - getCiudades(): List<Ciudad>
+    + getCostoTotal(): double
+    + compareTo(Viaje otro): int
+    + toString(): String
+}
+
+Rutas --> Keyboard
+Rutas --> ControladorGrafo
+ControladorGrafo --> Grafo
+ControladorGrafo --> ParserLinea
+ControladorGrafo --> AlgoritmoBusquedaCamino
+Grafo --> Ciudad
+Grafo --> LineaAerea
+Grafo --> Ruta
+Grafo --> Consulta
+ParserLinea --> LineaAerea
+ParserLinea --> Ciudad
+ParserLinea --> Ruta
+ParserLinea --> Consulta
+AlgoritmoBusquedaCamino --> Grafo
+AlgoritmoBusquedaCamino --> Viaje
+Viaje --> Ciudad
+
+@enduml
