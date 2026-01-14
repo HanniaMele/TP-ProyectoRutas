@@ -194,7 +194,7 @@ public class AlgoritmoBusquedaCamino {
         List<Viaje> resultado = new ArrayList<>();
 
         //Mientras cola no este vacia (es decir que existan Viajes incompletos para revisar posibles rutas) y aun no se obtengan los 5 Viajes menos costosos
-        while (!cola.isEmpty() && resultado.size() < 5) {
+        do {
 
             //Saca de la cola el Viaje en la cabecera
             Viaje viajeActual = cola.poll();
@@ -246,7 +246,7 @@ public class AlgoritmoBusquedaCamino {
                 //El potencial Viaje se agrega a la cola de prioridad
                 cola.add(new Viaje(nuevoCamino, nuevoCosto));
             }
-        }
+        }while (!cola.isEmpty() && resultado.size() < 5);
 
         return resultado;
     }
