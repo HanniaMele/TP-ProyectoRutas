@@ -164,38 +164,47 @@ public class ControladorGrafo {
         for (Consulta consulta : grafo.getConsulta()) {
 
             System.out.println("----------------------------------");
-            
-            System.out.println("Consulta: " + consulta.getOrigen() + " -> " + consulta.getDestino());
-            
-            //--------------------------------------------------------------------------------------------
-            //////////////////// CAMINO MAS BARATO ///////////////////////////////////////////////////////
-            // Se genera el camino más barato
-            List<String> camino = viajeMenorPrecio(consulta.getOrigen(),consulta.getDestino());
+            imprimirConsulta(consulta.getOrigen(), consulta.getDestino());
 
-            // Si no existe un camino posible, se imprime un mensaje de que no hay ruta posible
-            // De lo contrario, si existe un camino posible, se imprimira el mas barato encontrado
-            if (camino == null || camino.isEmpty()) {
-                System.out.println("No hay ruta disponible.");
-            } else {
-                System.out.println("Camino más barato: " + camino);
+            if(consulta.getFechaRegreso() != null) {
+                System.out.println("REGRESO");
+                imprimirConsulta(consulta.getDestino(), consulta.getOrigen());
             }
-            //---------------------------------------------------------------------------------------------
-            //////////////////////////// 5 CAMINOS  MAS BARATOS ///////////////////////////////////////////
-            // Se obtiene los 5 caminos mas baratos para realizar el viaje
-            List<Viaje> top5 = top5ViajesBaratos(consulta.getOrigen(),consulta.getDestino());
-
-            // Si no existen caminos disponibles para realizar el viaje, se imprime un mensaje que las rutas no disponibles
-            // Si pudieron ser obtenidos, seran impresos
-            if (top5 == null || top5.isEmpty()) {
-                System.out.println("Top 5: No disponible.");
-            } else {
-                System.out.println("Top 5 viajes baratos:");
-                for (Viaje viaje : top5) {
-                    System.out.println("  - " + viaje);
-                }
-            }
-            
         }
+    }
+
+    public void imprimirConsulta(String origen, String destino){
+  
+        System.out.println("Consulta: " + origen + " -> " + destino);
+        
+        //--------------------------------------------------------------------------------------------
+        //////////////////// CAMINO MAS BARATO ///////////////////////////////////////////////////////
+        // Se genera el camino más barato
+        /*List<String> camino = viajeMenorPrecio(origen,destino);*/
+
+        // Si no existe un camino posible, se imprime un mensaje de que no hay ruta posible
+        // De lo contrario, si existe un camino posible, se imprimira el mas barato encontrado
+        /*if (camino == null || camino.isEmpty()) {
+            System.out.println("No hay ruta disponible.");
+        } else {
+            System.out.println("Camino más barato: " + camino);
+        }*/
+        //---------------------------------------------------------------------------------------------
+        //////////////////////////// 5 CAMINOS  MAS BARATOS ///////////////////////////////////////////
+        // Se obtiene los 5 caminos mas baratos para realizar el viaje
+        List<Viaje> top5 = top5ViajesBaratos(origen,destino);
+
+        // Si no existen caminos disponibles para realizar el viaje, se imprime un mensaje que las rutas no disponibles
+        // Si pudieron ser obtenidos, seran impresos
+        if (top5 == null || top5.isEmpty()) {
+            System.out.println("Top 5: No disponible.");
+        } else {
+            System.out.println("Top 5 viajes baratos:");
+            for (Viaje viaje : top5) {
+                System.out.println("  - " + viaje);
+            }
+        }
+
     }
 
     /*

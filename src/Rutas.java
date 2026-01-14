@@ -126,9 +126,6 @@ public class Rutas {
             }
 
             continuar = pregunta("¿Continuar procesando datos? (S/N)");
-
-            System.out.println(continuar);
-
         }
 
         System.out.println("Fin del programa");
